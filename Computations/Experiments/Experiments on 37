@@ -1,0 +1,102 @@
+Experiments on 37
+
+1. Check which hyperplanes of secondary cone contain Motif 
+for Mot in MotE
+    visCone = visibilityConeE(Mot)
+    hyp = filter(i -> pm.polytope.contains(pm.polytope.facet(SecCone,i),visCone), 0:18)
+    V = Vector{Int}(SecCone.RAYS_IN_FACETS[hyp[1]+1, :])
+    for i in 2:length(hyp) V+= Vector{Int}(SecCone.RAYS_IN_FACETS[hyp[i]+1,:]) end
+    for i in 1:length(V) 
+        if V[i]==length(hyp) V[i] = i else V[i] = 0 end 
+    end
+    V = map(i -> i-1, filter(i -> i!=0, V))
+    f = pm.polytope.face(SecCone, V)
+    println("The visibility cone of motif ", Mot[1], " is contained in a face of the secondary cone: ", pm.polytope.contains(f, visCone))
+    println("It has hyperplanes", hyp)
+end
+
+2. Check whether intersection of Schlaefli walls coincide and hyperplanes of hv motifs coincide with their alleged schlaefliwalls
+# for Mot in MotE
+#     visCone = visibilityConeE(Mot)
+#     i = 1; j = 1; Mot_A = MotA[1]; Mot_D = MotD[1]
+#     F = pm.polytope.intersection(visCone, visibilityConeA(Mot_A))
+#     G = pm.polytope.intersection(visCone, visibilityConeD(Mot_D))
+#     while !pm.polytope.equal_polyhedra(visCone, F) && !pm.polytope.equal_polyhedra(visCone, G) && i < length(MotA) && j < length(MotD)
+#         i += 1; j += 1
+#         Mot_A = MotA[i]; Mot_D = MotD[j]
+#         F = pm.polytope.intersection(visCone, visibilityConeA(Mot_A))
+#         G = pm.polytope.intersection(visCone, visibilityConeD(Mot_D))
+#     end
+#     if pm.polytope.equal_polyhedra(visCone, F) println(Mot, "i", i) end
+#     if pm.polytope.equal_polyhedra(visCone, G) println(Mot, "j", j) end
+# end
+
+for Mot in MotE
+    visCone = visibilityConeE(Mot)
+    check = false; i = 1
+    while !check && i < length(MotD)
+        visConeD = visibilityConeD(MotD[i])
+        hyp = filter(i -> pm.polytope.contains(pm.polytope.facet(SecCone,i),visCone), 0:18)
+        V = Vector{Int}(SecCone.RAYS_IN_FACETS[hyp[1]+1, :])
+        for i in 2:length(hyp) V+= Vector{Int}(SecCone.RAYS_IN_FACETS[hyp[i]+1,:]) end
+        for i in 1:length(V) 
+            if V[i]==length(hyp) V[i] = i else V[i] = 0 end 
+        end
+        V = map(i -> i-1, filter(i -> i!=0, V))
+        f = pm.polytope.face(SecCone, V)
+        inter = pm.polytope.intersection(f, visConeD)
+        check = pm.polytope.equal_polyhedra(inter, visCone)
+        if check println(Mot, i) end
+        i += 1
+    end
+end
+
+3. Compute Hyperplane Arrangement
+SWs = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+for Mot in MotA
+    SW = SchlaefliWall(visibilityConeA(Mot))
+    if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
+end
+for Mot in MotD 
+	SW = SchlaefliWall(visibilityConeD(Mot)) 
+    if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
+end
+for Mot in MotE[[1,12,13]]
+    SW = SchlaefliWall(visibilityConeE(Mot))
+    SWs = vcat(SWs, transpose(SW[1])) end end
+end
+HA = pm.fan.HyperplaneArrangement(HYPERPLANES=SWs[2:nrows(SWs),:], SUPPORT=SecCone)
+CD = HA.CHAMBER_DECOMPOSITION
+
+6. Compute minimal number of lines
+f_normals = Matrix{Int}(CD.FACET_NORMALS)
+mcones_facets = Matrix{Int}(CD.MAXIMAL_CONES_FACETS)
+
+for i in 1:nrows(mcones_facets)
+    cone_facets = mcones_facets[i,:]
+    ineq_pos = f_normals[filter(i -> cone_facets[i] > 0,1:ncols(mcones_facets)),:]
+    ineq = vcat(ineq_pos,-f_normals[filter(i -> cone_facets[i] < 0,1:ncols(mcones_facets)),:])
+    cone = pm.polytope.Cone(INEQUALITIES=ineq)
+    count = 0
+    for Mot in MotA
+        visCone = visibilityConeA(Mot)
+        if pm.polytope.contains(visCone, cone) count += 1 end
+    end
+    for Mot in MotD
+        visCone = visibilityConeD(Mot)
+        if pm.polytope.contains(visCone, cone) count += 1 end
+    end
+    println(count)
+end
+
+&SH_{47}: c_{11} - c_{12} - c_{13} + c_{15} + c_{17} - c_{18}
+&SH_{48}: c_{11} - c_{13} + c_{15} - c_{17} - c_{18} + c_{19} \\
+&SH_{49}: 2c_{7} - c_{8} - c_{10} + c_{11} - 2c_{13} + c_{16}
+&SH_{50}: c_{0} - c_{1} - c_{4} + c_{7} + c_{11} - c_{13} \\
+&SH_{51}: c_{1} - c_{2} - c_{4} + c_{7} + c_{11} - c_{13}
+&SH_{52}: -c_{11} + c_{13} + c_{14} - c_{15} \\
+&SH_{53}: 2c_{7} - c_{8} + c_{11} - 3c_{13} + c_{18}
+&SH_{54}: -c_{4} + 3c_{7} - c_{8} - c_{9} + c_{11} - 2c_{13} + c_{15} \\
+&SH_{55}: c_{7} - c_{8} - c_{9} + c_{11} - 2c_{13} + 3c_{15} - c_{18}
+&SH_{56}: c_{5} - c_{7} - c_{11} + c_{13} \\
+&SH_{57}: 2c_{4} - 4c_{7} + c_{8} + c_{9} - c_{11} + c_{13}

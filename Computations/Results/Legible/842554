@@ -1,0 +1,530 @@
+# Output
+#=
+MotifA: [4 10 5 11 8 9]
+[c1 - c4 - c8 + c9]
+MotifA: [18 16 14 11 8 9]
+[-c8 + c9 + c11 - c16 - c18 + c19]
+MotifA: [18 19 14 11 8 9]
+[-c8 + c9 + c14 - 2*c18 + c19, c8 - c9 - c11 + c16 + c18 - c19]
+MotifA: [18 16 14 11 3 6]
+[-c3 + c6 + c11 - c16 - c18 + c19]
+MotifA: [18 19 14 11 3 6]
+[-c3 + c6 + c14 - 2*c18 + c19, c3 - c6 - c11 + c16 + c18 - c19]
+MotifA: [4 1 13 11 9 15]
+[-c4 + c9 + c10 - c15]
+MotifA: [6 2 14 11 9 15]
+[-c2 + c3 - c6 + c9 + c11 - c15]
+MotifA: [6 3 14 11 9 15]
+[c2 - c3 + c6 - c9 - c11 + c15, c3 - 2*c6 + c9 + c14 - c15]
+MotifA: [6 2 14 11 15 18]
+[-c2 + c3 - c6 + c11 + c15 - c18]
+MotifA: [6 3 14 11 15 18]
+[c2 - c3 + c6 - c11 - c15 + c18, c3 - 2*c6 + c14 + c15 - c18]
+MotifA: [6 2 14 11 18 19]
+[-c2 + c3 - c6 + c11 + c18 - c19]
+MotifA: [6 3 14 11 18 19]
+[c2 - c3 + c6 - c11 - c18 + c19, c3 - 2*c6 + c14 + c18 - c19]
+MotifA: [18 16 14 11 6 8]
+[-c6 + c8 + c11 - c16 - c18 + c19]
+MotifA: [18 19 14 11 6 8]
+[-c6 + c8 + c14 - 2*c18 + c19, c6 - c8 - c11 + c16 + c18 - c19]
+MotifD: [9 15 13 11 10 1 4]
+[c4 - c9 - c10 + c15]
+MotifD: [15 18 16 11 10 1 4]
+[c1 - c4 - c11 + c15 + c16 - c18]
+MotifD: [18 19 16 11 10 1 4]
+[c1 - c4 - c11 + c16 + c18 - c19]
+MotifD: [3 6 2 11 1 4 10]
+[c2 - c3 - c4 + c6 + c10 - c11]
+MotifD: [6 8 2 11 1 4 10]
+[c2 - c4 - c6 + c8 + c10 - c11]
+MotifD: [8 9 5 11 1 4 10]
+[-c1 + c4 + c8 - c9]
+MotifD: [4 10 1 11 2 3 6]
+[-c2 + c3 + c4 - c6 - c10 + c11]
+MotifD: [4 7 5 11 2 3 6]
+[]
+MotifD: [7 9 5 11 2 3 6]
+[]
+MotifD: [4 10 1 11 2 6 8]
+[-c2 + c4 + c6 - c8 - c10 + c11]
+MotifD: [4 7 5 11 2 6 8]
+[]
+MotifD: [7 9 5 11 2 6 8]
+[]
+MotifD: [1 4 10 11 16 15 18]
+[-c1 + c4 + c11 - c15 - c16 + c18]
+MotifD: [4 7 13 11 16 15 18]
+[]
+MotifD: [7 9 13 11 16 15 18]
+[]
+MotifD: [1 4 10 11 16 18 19]
+[-c1 + c4 + c11 - c16 - c18 + c19]
+MotifD: [4 7 13 11 16 18 19]
+[]
+MotifD: [7 9 13 11 16 18 19]
+[]
+MotifE: [3 11 14 9 15 8 9]
+[-c3 + c8 + c12 - c15]
+MotifE: [12 11 14 9 15 8 9]
+[c3 - c8 - c12 + c15, c8 - c12 - c15 + c17]
+MotifE: [17 11 14 9 15 8 9]
+[-c8 + c12 + c15 - c17, c8 - c15 - c17 + c19]
+MotifE: [19 11 14 9 15 8 9]
+[-c8 + c15 + c17 - c19]
+MotifE: [3 11 14 15 18 8 9]
+[-c3 + c8 + c12 - c15]
+MotifE: [12 11 14 15 18 8 9]
+[c3 - c8 - c12 + c15, c8 - c12 - c15 + c17]
+MotifE: [17 11 14 15 18 8 9]
+[-c8 + c12 + c15 - c17, c8 - c15 - c17 + c19]
+MotifE: [19 11 14 15 18 8 9]
+[-c8 + c15 + c17 - c19]
+MotifE: [3 11 14 18 19 8 9]
+[c6 - c8 - c14 + 2*c18 - c19, -c3 + c8 + c12 - 2*c18 + c19, -c8 + c9 + c14 - 2*c18 + c19]
+MotifE: [12 11 14 18 19 8 9]
+[c3 - c8 - c12 + 2*c18 - c19, c8 - c12 + c17 - 2*c18 + c19, -c8 + c9 + c14 - 2*c18 + c19]
+MotifE: [17 11 14 18 19 8 9]
+[-c8 + c12 - c17 + 2*c18 - c19, c8 - c17 - 2*c18 + 2*c19, -c8 + c9 + c14 - 2*c18 + c19]
+MotifE: [19 11 14 18 19 8 9]
+[-c8 + c17 + 2*c18 - 2*c19, -c8 + c9 + c14 - 2*c18 + c19]
+MotifE: [3 11 14 9 15 3 6]
+[-2*c3 + 2*c6 + c12 - c15, c3 - 2*c6 + c9 + c14 - c15]
+MotifE: [12 11 14 9 15 3 6]
+[2*c3 - 2*c6 - c12 + c15, -c3 + 2*c6 - c12 - c15 + c17, c3 - 2*c6 + c9 + c14 - c15]
+MotifE: [17 11 14 9 15 3 6]
+[c3 - 2*c6 + c12 + c15 - c17, -c3 + 2*c6 - c15 - c17 + c19, c3 - 2*c6 + c9 + c14 - c15]
+MotifE: [19 11 14 9 15 3 6]
+[c3 - 2*c6 + c15 + c17 - c19, -c3 + 2*c6 - c14 - c15 + c18, c3 - 2*c6 + c9 + c14 - c15]
+MotifE: [3 11 14 15 18 3 6]
+[-2*c3 + 2*c6 + c12 - c15, c3 - 2*c6 + c9 + c14 - c15]
+MotifE: [12 11 14 15 18 3 6]
+[2*c3 - 2*c6 - c12 + c15, -c3 + 2*c6 - c12 - c15 + c17, c3 - 2*c6 + c9 + c14 - c15]
+MotifE: [17 11 14 15 18 3 6]
+[c3 - 2*c6 + c12 + c15 - c17, -c3 + 2*c6 - c15 - c17 + c19, c3 - 2*c6 + c9 + c14 - c15]
+MotifE: [19 11 14 15 18 3 6]
+[c3 - 2*c6 + c15 + c17 - c19, -c3 + 2*c6 - c14 - c15 + c18, c3 - 2*c6 + c9 + c14 - c15]
+MotifE: [3 11 14 18 19 3 6]
+[c3 - c6 - c14 + 2*c18 - c19, -2*c3 + 2*c6 + c12 - 2*c18 + c19, c3 - 2*c6 + c9 + c14 - 2*c18 + c19]
+MotifE: [12 11 14 18 19 3 6]
+[2*c3 - 2*c6 - c12 + 2*c18 - c19, -c3 + 2*c6 - c12 + c17 - 2*c18 + c19, c3 - 2*c6 + c9 + c14 - 2*c18 + c19]
+MotifE: [17 11 14 18 19 3 6]
+[c3 - 2*c6 + c12 - c17 + 2*c18 - c19, -c3 + 2*c6 - c17 - 2*c18 + 2*c19, c3 - 2*c6 + c9 + c14 - 2*c18 + c19]
+MotifE: [19 11 14 18 19 3 6]
+[c3 - 2*c6 + c17 + 2*c18 - 2*c19, -c3 + 2*c6 - c14 - c18 + c19, c3 - 2*c6 + c9 + c14 - 2*c18 + c19]
+MotifE: [1 5 11 8 9 7 9]
+[-c1 + c2 - c5 + 2*c7 - c9]
+MotifE: [2 5 11 8 9 7 9]
+[c1 - c2 + c5 - 2*c7 + c9]
+MotifE: [10 11 13 9 15 7 9]
+[2*c7 - c9 - c10 - c13 + c16]
+MotifE: [16 11 13 9 15 7 9]
+[-2*c7 + c9 + c10 + c13 - c16]
+MotifE: [1 5 11 8 9 4 7]
+[]
+MotifE: [2 5 11 8 9 4 7]
+[c2 - 2*c5 + c7]
+MotifE: [10 11 13 9 15 4 7]
+[]
+MotifE: [16 11 13 9 15 4 7]
+[c7 - 2*c13 + c16]
+MotifE: [3 11 14 9 15 6 8]
+[-c3 + c8 + c12 - c15]
+MotifE: [12 11 14 9 15 6 8]
+[c3 - c8 - c12 + c15, c8 - c12 - c15 + c17]
+MotifE: [17 11 14 9 15 6 8]
+[-c8 + c12 + c15 - c17, c8 - c15 - c17 + c19]
+MotifE: [19 11 14 9 15 6 8]
+[-c8 + c15 + c17 - c19]
+MotifE: [3 11 14 15 18 6 8]
+[-c3 + c8 + c12 - c15]
+MotifE: [12 11 14 15 18 6 8]
+[c3 - c8 - c12 + c15, c8 - c12 - c15 + c17]
+MotifE: [17 11 14 15 18 6 8]
+[-c8 + c12 + c15 - c17, c8 - c15 - c17 + c19]
+MotifE: [19 11 14 15 18 6 8]
+[-c8 + c15 + c17 - c19]
+MotifE: [3 11 14 18 19 6 8]
+[c6 - c8 - c14 + 2*c18 - c19, -c3 + c8 + c12 - 2*c18 + c19, -c8 + c9 + c14 - 2*c18 + c19]
+MotifE: [12 11 14 18 19 6 8]
+[c3 - c8 - c12 + 2*c18 - c19, c8 - c12 + c17 - 2*c18 + c19, -c8 + c9 + c14 - 2*c18 + c19]
+MotifE: [17 11 14 18 19 6 8]
+[-c8 + c12 - c17 + 2*c18 - c19, c8 - c17 - 2*c18 + 2*c19, -c8 + c9 + c14 - 2*c18 + c19]
+MotifE: [19 11 14 18 19 6 8]
+[-c8 + c17 + 2*c18 - 2*c19, -c8 + c9 + c14 - 2*c18 + c19]
+=#
+
+MotifA: [4 10 5 11 8 9]
+[c1 - c4 - c8 + c9]
+MotifA: [18 16 14 11 8 9]
+[-c8 + c9 + c11 - c16 - c18 + c19]
+MotifA: [18 19 14 11 8 9]
+[-c8 + c9 + c14 - 2*c18 + c19, c8 - c9 - c11 + c16 + c18 - c19]
+MotifA: [18 16 14 11 3 6]
+[-c3 + c6 + c11 - c16 - c18 + c19]
+MotifA: [18 19 14 11 3 6]
+[-c3 + c6 + c14 - 2*c18 + c19, c3 - c6 - c11 + c16 + c18 - c19]
+MotifA: [4 1 13 11 9 15]
+[-c4 + c9 + c10 - c15]
+MotifA: [6 2 14 11 9 15]
+[-c2 + c3 - c6 + c9 + c11 - c15]
+MotifA: [6 3 14 11 9 15]
+[c2 - c3 + c6 - c9 - c11 + c15, c3 - 2*c6 + c9 + c14 - c15]
+MotifA: [6 2 14 11 15 18]
+[-c2 + c3 - c6 + c11 + c15 - c18]
+MotifA: [6 3 14 11 15 18]
+[c2 - c3 + c6 - c11 - c15 + c18, c3 - 2*c6 + c14 + c15 - c18]
+MotifA: [6 2 14 11 18 19]
+[-c2 + c3 - c6 + c11 + c18 - c19]
+MotifA: [6 3 14 11 18 19]
+[c2 - c3 + c6 - c11 - c18 + c19, c3 - 2*c6 + c14 + c18 - c19]
+MotifA: [18 16 14 11 6 8]
+[-c6 + c8 + c11 - c16 - c18 + c19]
+MotifA: [18 19 14 11 6 8]
+[-c6 + c8 + c14 - 2*c18 + c19, c6 - c8 - c11 + c16 + c18 - c19]
+MotifD: [9 15 13 11 10 1 4]
+[c4 - c9 - c10 + c15]
+MotifD: [15 18 16 11 10 1 4]
+[c1 - c4 - c11 + c15 + c16 - c18]
+MotifD: [18 19 16 11 10 1 4]
+[c1 - c4 - c11 + c16 + c18 - c19]
+MotifD: [3 6 2 11 1 4 10]
+[c2 - c3 - c4 + c6 + c10 - c11]
+MotifD: [6 8 2 11 1 4 10]
+[c2 - c4 - c6 + c8 + c10 - c11]
+MotifD: [8 9 5 11 1 4 10]
+[-c1 + c4 + c8 - c9]
+MotifD: [4 10 1 11 2 3 6]
+[-c2 + c3 + c4 - c6 - c10 + c11]
+MotifD: [4 7 5 11 2 3 6]
+[]
+MotifD: [7 9 5 11 2 3 6]
+[]
+MotifD: [4 10 1 11 2 6 8]
+[-c2 + c4 + c6 - c8 - c10 + c11]
+MotifD: [4 7 5 11 2 6 8]
+[]
+MotifD: [7 9 5 11 2 6 8]
+[]
+MotifD: [1 4 10 11 16 15 18]
+[-c1 + c4 + c11 - c15 - c16 + c18]
+MotifD: [4 7 13 11 16 15 18]
+[]
+MotifD: [7 9 13 11 16 15 18]
+[]
+MotifD: [1 4 10 11 16 18 19]
+[-c1 + c4 + c11 - c16 - c18 + c19]
+MotifD: [4 7 13 11 16 18 19]
+[]
+MotifD: [7 9 13 11 16 18 19]
+[]
+MotifE: [3 11 14 9 15 8 9]
+HARDLY VISIBILE MOTIFS:
+[-c3 + c8 + c12 - c15]
+MotifE: [12 11 14 9 15 8 9]
+HARDLY VISIBILE MOTIFS:
+[c3 - c8 - c12 + c15, c8 - c12 - c15 + c17]
+MotifE: [17 11 14 9 15 8 9]
+HARDLY VISIBILE MOTIFS:
+[-c8 + c12 + c15 - c17, c8 - c15 - c17 + c19]
+MotifE: [19 11 14 9 15 8 9]
+HARDLY VISIBILE MOTIFS:
+[-c8 + c15 + c17 - c19]
+MotifE: [3 11 14 15 18 8 9]
+HARDLY VISIBILE MOTIFS:
+[-c3 + c8 + c12 - c15]
+MotifE: [12 11 14 15 18 8 9]
+HARDLY VISIBILE MOTIFS:
+[c3 - c8 - c12 + c15, c8 - c12 - c15 + c17]
+MotifE: [17 11 14 15 18 8 9]
+HARDLY VISIBILE MOTIFS:
+[-c8 + c12 + c15 - c17, c8 - c15 - c17 + c19]
+MotifE: [19 11 14 15 18 8 9]
+HARDLY VISIBILE MOTIFS:
+[-c8 + c15 + c17 - c19]
+MotifE: [3 11 14 18 19 8 9]
+[c6 - c8 - c14 + 2*c18 - c19, -c3 + c8 + c12 - 2*c18 + c19, -c8 + c9 + c14 - 2*c18 + c19]
+MotifE: [12 11 14 18 19 8 9]
+[c3 - c8 - c12 + 2*c18 - c19, c8 - c12 + c17 - 2*c18 + c19, -c8 + c9 + c14 - 2*c18 + c19]
+MotifE: [17 11 14 18 19 8 9]
+[-c8 + c12 - c17 + 2*c18 - c19, c8 - c17 - 2*c18 + 2*c19, -c8 + c9 + c14 - 2*c18 + c19]
+MotifE: [19 11 14 18 19 8 9]
+[-c8 + c17 + 2*c18 - 2*c19, -c8 + c9 + c14 - 2*c18 + c19]
+MotifE: [3 11 14 9 15 3 6]
+[-2*c3 + 2*c6 + c12 - c15, c3 - 2*c6 + c9 + c14 - c15]
+MotifE: [12 11 14 9 15 3 6]
+[2*c3 - 2*c6 - c12 + c15, -c3 + 2*c6 - c12 - c15 + c17, c3 - 2*c6 + c9 + c14 - c15]
+MotifE: [17 11 14 9 15 3 6]
+[c3 - 2*c6 + c12 + c15 - c17, -c3 + 2*c6 - c15 - c17 + c19, c3 - 2*c6 + c9 + c14 - c15]
+MotifE: [19 11 14 9 15 3 6]
+[c3 - 2*c6 + c15 + c17 - c19, -c3 + 2*c6 - c14 - c15 + c18, c3 - 2*c6 + c9 + c14 - c15]
+MotifE: [3 11 14 15 18 3 6]
+[-2*c3 + 2*c6 + c12 - c15, c3 - 2*c6 + c9 + c14 - c15]
+MotifE: [12 11 14 15 18 3 6]
+[2*c3 - 2*c6 - c12 + c15, -c3 + 2*c6 - c12 - c15 + c17, c3 - 2*c6 + c9 + c14 - c15]
+MotifE: [17 11 14 15 18 3 6]
+[c3 - 2*c6 + c12 + c15 - c17, -c3 + 2*c6 - c15 - c17 + c19, c3 - 2*c6 + c9 + c14 - c15]
+MotifE: [19 11 14 15 18 3 6]
+[c3 - 2*c6 + c15 + c17 - c19, -c3 + 2*c6 - c14 - c15 + c18, c3 - 2*c6 + c9 + c14 - c15]
+MotifE: [3 11 14 18 19 3 6]
+[c3 - c6 - c14 + 2*c18 - c19, -2*c3 + 2*c6 + c12 - 2*c18 + c19, c3 - 2*c6 + c9 + c14 - 2*c18 + c19]
+MotifE: [12 11 14 18 19 3 6]
+[2*c3 - 2*c6 - c12 + 2*c18 - c19, -c3 + 2*c6 - c12 + c17 - 2*c18 + c19, c3 - 2*c6 + c9 + c14 - 2*c18 + c19]
+MotifE: [17 11 14 18 19 3 6]
+[c3 - 2*c6 + c12 - c17 + 2*c18 - c19, -c3 + 2*c6 - c17 - 2*c18 + 2*c19, c3 - 2*c6 + c9 + c14 - 2*c18 + c19]
+MotifE: [19 11 14 18 19 3 6]
+[c3 - 2*c6 + c17 + 2*c18 - 2*c19, -c3 + 2*c6 - c14 - c18 + c19, c3 - 2*c6 + c9 + c14 - 2*c18 + c19]
+MotifE: [1 5 11 8 9 7 9]
+HARDLY VISIBILE MOTIFS:
+[-c1 + c2 - c5 + 2*c7 - c9]
+MotifE: [2 5 11 8 9 7 9]
+HARDLY VISIBILE MOTIFS:
+[c1 - c2 + c5 - 2*c7 + c9]
+MotifE: [10 11 13 9 15 7 9]
+HARDLY VISIBILE MOTIFS:
+[2*c7 - c9 - c10 - c13 + c16]
+MotifE: [16 11 13 9 15 7 9]
+HARDLY VISIBILE MOTIFS:
+[-2*c7 + c9 + c10 + c13 - c16]
+MotifE: [1 5 11 8 9 4 7]
+HARDLY VISIBILE MOTIFS:
+[]
+MotifE: [2 5 11 8 9 4 7]
+HARDLY VISIBILE MOTIFS:
+[c2 - 2*c5 + c7]
+MotifE: [10 11 13 9 15 4 7]
+HARDLY VISIBILE MOTIFS:
+[]
+MotifE: [16 11 13 9 15 4 7]
+HARDLY VISIBILE MOTIFS:
+[c7 - 2*c13 + c16]
+MotifE: [3 11 14 9 15 6 8]
+HARDLY VISIBILE MOTIFS:
+[-c3 + c8 + c12 - c15]
+MotifE: [12 11 14 9 15 6 8]
+HARDLY VISIBILE MOTIFS:
+[c3 - c8 - c12 + c15, c8 - c12 - c15 + c17]
+MotifE: [17 11 14 9 15 6 8]
+HARDLY VISIBILE MOTIFS:
+[-c8 + c12 + c15 - c17, c8 - c15 - c17 + c19]
+MotifE: [19 11 14 9 15 6 8]
+HARDLY VISIBILE MOTIFS:
+[-c8 + c15 + c17 - c19]
+MotifE: [3 11 14 15 18 6 8]
+HARDLY VISIBILE MOTIFS:
+[-c3 + c8 + c12 - c15]
+MotifE: [12 11 14 15 18 6 8]
+HARDLY VISIBILE MOTIFS:
+[c3 - c8 - c12 + c15, c8 - c12 - c15 + c17]
+MotifE: [17 11 14 15 18 6 8]
+HARDLY VISIBILE MOTIFS:
+[-c8 + c12 + c15 - c17, c8 - c15 - c17 + c19]
+MotifE: [19 11 14 15 18 6 8]
+HARDLY VISIBILE MOTIFS:
+[-c8 + c15 + c17 - c19]
+MotifE: [3 11 14 18 19 6 8]
+[c6 - c8 - c14 + 2*c18 - c19, -c3 + c8 + c12 - 2*c18 + c19, -c8 + c9 + c14 - 2*c18 + c19]
+MotifE: [12 11 14 18 19 6 8]
+[c3 - c8 - c12 + 2*c18 - c19, c8 - c12 + c17 - 2*c18 + c19, -c8 + c9 + c14 - 2*c18 + c19]
+MotifE: [17 11 14 18 19 6 8]
+[-c8 + c12 - c17 + 2*c18 - c19, c8 - c17 - 2*c18 + 2*c19, -c8 + c9 + c14 - 2*c18 + c19]
+MotifE: [19 11 14 18 19 6 8]
+[-c8 + c17 + 2*c18 - 2*c19, -c8 + c9 + c14 - 2*c18 + c19]
+
+EQUATIONS:
+Motif 3D
+QQMPolyRingElem[c4 - c9 - c10 + c15]
+& [9 15 13 11 10 1 4] & [3 0 2 1] & nothing
+QQMPolyRingElem[c1 - c4 - c11 + c15 + c16 - c18]
+& [15 18 16 11 10 1 4] & [3 0 2 1] & nothing
+QQMPolyRingElem[c1 - c4 - c11 + c16 + c18 - c19]
+& [18 19 16 11 10 1 4] & [3 0 2 1] & nothing
+QQMPolyRingElem[c2 - c3 - c4 + c6 + c10 - c11]
+& [3 6 2 11 1 4 10] & [1 0 2 3] & nothing
+QQMPolyRingElem[c2 - c4 - c6 + c8 + c10 - c11]
+& [6 8 2 11 1 4 10] & [1 0 2 3] & nothing
+QQMPolyRingElem[-c1 + c4 + c8 - c9]
+& [8 9 5 11 1 4 10] & [1 0 2 3] & nothing
+QQMPolyRingElem[-c2 + c3 + c4 - c6 - c10 + c11]
+& [4 10 1 11 2 3 6] & [1 3 2 0] & nothing
+QQMPolyRingElem[]
+& [4 7 5 11 2 3 6] & [1 3 2 0] & nothing
+QQMPolyRingElem[]
+& [7 9 5 11 2 3 6] & [1 3 2 0] & nothing
+QQMPolyRingElem[-c2 + c4 + c6 - c8 - c10 + c11]
+& [4 10 1 11 2 6 8] & [1 3 2 0] & nothing
+QQMPolyRingElem[]
+& [4 7 5 11 2 6 8] & [1 3 2 0] & nothing
+QQMPolyRingElem[]
+& [7 9 5 11 2 6 8] & [1 3 2 0] & nothing
+QQMPolyRingElem[-c1 + c4 + c11 - c15 - c16 + c18]
+& [1 4 10 11 16 15 18] & [3 1 2 0] & nothing
+QQMPolyRingElem[]
+& [4 7 13 11 16 15 18] & [3 1 2 0] & nothing
+QQMPolyRingElem[]
+& [7 9 13 11 16 15 18] & [3 1 2 0] & nothing
+QQMPolyRingElem[-c1 + c4 + c11 - c16 - c18 + c19]
+& [1 4 10 11 16 18 19] & [3 1 2 0] & nothing
+QQMPolyRingElem[]
+& [4 7 13 11 16 18 19] & [3 1 2 0] & nothing
+QQMPolyRingElem[]
+& [7 9 13 11 16 18 19] & [3 1 2 0] & nothing
+Motif 3E
+pm::Matrix<pm::Rational>
+0 0 0 0 0 0 0 0 -1 1 0 0 0 0 1 -1 0 0 0 0
+
+QQMPolyRingElem[-c3 + c8 + c12 - c15]
+& [3 11 14 9 15 8 9] & [0 2 3 1] & nothing
+pm::Matrix<pm::Rational>
+0 0 0 0 0 0 0 0 -1 1 0 0 0 0 1 -1 0 0 0 0
+
+QQMPolyRingElem[c3 - c8 - c12 + c15, c8 - c12 - c15 + c17]
+& [12 11 14 9 15 8 9] & [0 2 3 1] & nothing
+pm::Matrix<pm::Rational>
+0 0 0 0 0 0 0 0 -1 1 0 0 0 0 1 -1 0 0 0 0
+
+QQMPolyRingElem[-c8 + c12 + c15 - c17, c8 - c15 - c17 + c19]
+& [17 11 14 9 15 8 9] & [0 2 3 1] & nothing
+pm::Matrix<pm::Rational>
+0 0 0 0 0 0 0 0 -1 1 0 0 0 0 1 -1 0 0 0 0
+
+QQMPolyRingElem[-c8 + c15 + c17 - c19]
+& [19 11 14 9 15 8 9] & [0 2 3 1] & nothing
+pm::Matrix<pm::Rational>
+0 0 0 0 0 0 0 0 -1 1 0 0 0 0 1 -1 0 0 0 0
+
+QQMPolyRingElem[-c3 + c8 + c12 - c15]
+& [3 11 14 15 18 8 9] & [0 2 3 1] & nothing
+pm::Matrix<pm::Rational>
+0 0 0 0 0 0 0 0 -1 1 0 0 0 0 1 -1 0 0 0 0
+
+QQMPolyRingElem[c3 - c8 - c12 + c15, c8 - c12 - c15 + c17]
+& [12 11 14 15 18 8 9] & [0 2 3 1] & nothing
+pm::Matrix<pm::Rational>
+0 0 0 0 0 0 0 0 -1 1 0 0 0 0 1 -1 0 0 0 0
+
+QQMPolyRingElem[-c8 + c12 + c15 - c17, c8 - c15 - c17 + c19]
+& [17 11 14 15 18 8 9] & [0 2 3 1] & nothing
+pm::Matrix<pm::Rational>
+0 0 0 0 0 0 0 0 -1 1 0 0 0 0 1 -1 0 0 0 0
+
+QQMPolyRingElem[-c8 + c15 + c17 - c19]
+& [19 11 14 15 18 8 9] & [0 2 3 1] & nothing
+QQMPolyRingElem[c6 - c8 - c14 + 2*c18 - c19, -c3 + c8 + c12 - 2*c18 + c19, -c8 + c9 + c14 - 2*c18 + c19]
+& [3 11 14 18 19 8 9] & [0 2 3 1] & nothing
+QQMPolyRingElem[c3 - c8 - c12 + 2*c18 - c19, c8 - c12 + c17 - 2*c18 + c19, -c8 + c9 + c14 - 2*c18 + c19]
+& [12 11 14 18 19 8 9] & [0 2 3 1] & nothing
+QQMPolyRingElem[-c8 + c12 - c17 + 2*c18 - c19, c8 - c17 - 2*c18 + 2*c19, -c8 + c9 + c14 - 2*c18 + c19]
+& [17 11 14 18 19 8 9] & [0 2 3 1] & nothing
+QQMPolyRingElem[-c8 + c17 + 2*c18 - 2*c19, -c8 + c9 + c14 - 2*c18 + c19]
+& [19 11 14 18 19 8 9] & [0 2 3 1] & nothing
+QQMPolyRingElem[-2*c3 + 2*c6 + c12 - c15, c3 - 2*c6 + c9 + c14 - c15]
+& [3 11 14 9 15 3 6] & [0 2 3 1] & nothing
+QQMPolyRingElem[2*c3 - 2*c6 - c12 + c15, -c3 + 2*c6 - c12 - c15 + c17, c3 - 2*c6 + c9 + c14 - c15]
+& [12 11 14 9 15 3 6] & [0 2 3 1] & nothing
+QQMPolyRingElem[c3 - 2*c6 + c12 + c15 - c17, -c3 + 2*c6 - c15 - c17 + c19, c3 - 2*c6 + c9 + c14 - c15]
+& [17 11 14 9 15 3 6] & [0 2 3 1] & nothing
+QQMPolyRingElem[c3 - 2*c6 + c15 + c17 - c19, -c3 + 2*c6 - c14 - c15 + c18, c3 - 2*c6 + c9 + c14 - c15]
+& [19 11 14 9 15 3 6] & [0 2 3 1] & nothing
+QQMPolyRingElem[-2*c3 + 2*c6 + c12 - c15, c3 - 2*c6 + c9 + c14 - c15]
+& [3 11 14 15 18 3 6] & [0 2 3 1] & nothing
+QQMPolyRingElem[2*c3 - 2*c6 - c12 + c15, -c3 + 2*c6 - c12 - c15 + c17, c3 - 2*c6 + c9 + c14 - c15]
+& [12 11 14 15 18 3 6] & [0 2 3 1] & nothing
+QQMPolyRingElem[c3 - 2*c6 + c12 + c15 - c17, -c3 + 2*c6 - c15 - c17 + c19, c3 - 2*c6 + c9 + c14 - c15]
+& [17 11 14 15 18 3 6] & [0 2 3 1] & nothing
+QQMPolyRingElem[c3 - 2*c6 + c15 + c17 - c19, -c3 + 2*c6 - c14 - c15 + c18, c3 - 2*c6 + c9 + c14 - c15]
+& [19 11 14 15 18 3 6] & [0 2 3 1] & nothing
+QQMPolyRingElem[c3 - c6 - c14 + 2*c18 - c19, -2*c3 + 2*c6 + c12 - 2*c18 + c19, c3 - 2*c6 + c9 + c14 - 2*c18 + c19]
+& [3 11 14 18 19 3 6] & [0 2 3 1] & nothing
+QQMPolyRingElem[2*c3 - 2*c6 - c12 + 2*c18 - c19, -c3 + 2*c6 - c12 + c17 - 2*c18 + c19, c3 - 2*c6 + c9 + c14 - 2*c18 + c19]
+& [12 11 14 18 19 3 6] & [0 2 3 1] & nothing
+QQMPolyRingElem[c3 - 2*c6 + c12 - c17 + 2*c18 - c19, -c3 + 2*c6 - c17 - 2*c18 + 2*c19, c3 - 2*c6 + c9 + c14 - 2*c18 + c19]
+& [17 11 14 18 19 3 6] & [0 2 3 1] & nothing
+QQMPolyRingElem[c3 - 2*c6 + c17 + 2*c18 - 2*c19, -c3 + 2*c6 - c14 - c18 + c19, c3 - 2*c6 + c9 + c14 - 2*c18 + c19]
+& [19 11 14 18 19 3 6] & [0 2 3 1] & nothing
+pm::Matrix<pm::Rational>
+0 0 0 0 0 1 0 -1 -1 1 0 0 0 0 0 0 0 0 0 0
+
+QQMPolyRingElem[-c1 + c2 - c5 + 2*c7 - c9]
+& [1 5 11 8 9 7 9] & [1 2 0 3] & nothing
+pm::Matrix<pm::Rational>
+0 0 0 0 0 1 0 -1 -1 1 0 0 0 0 0 0 0 0 0 0
+
+QQMPolyRingElem[c1 - c2 + c5 - 2*c7 + c9]
+& [2 5 11 8 9 7 9] & [1 2 0 3] & nothing
+pm::Matrix<pm::Rational>
+0 0 0 0 0 0 0 -1 0 1 0 0 0 1 0 -1 0 0 0 0
+
+QQMPolyRingElem[2*c7 - c9 - c10 - c13 + c16]
+& [10 11 13 9 15 7 9] & [2 3 0 1] & nothing
+pm::Matrix<pm::Rational>
+0 0 0 0 0 0 0 -1 0 1 0 0 0 1 0 -1 0 0 0 0
+
+QQMPolyRingElem[-2*c7 + c9 + c10 + c13 - c16]
+& [16 11 13 9 15 7 9] & [2 3 0 1] & nothing
+pm::Matrix<pm::Rational>
+0 0 0 0 -1 1 0 1 -1 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 1/4 3/4 0 -5/4 -3/4 1 0 0 0 0 0 0 0 0 0 0
+
+QQMPolyRingElem[]
+& [1 5 11 8 9 4 7] & [1 2 0 3] & nothing
+pm::Matrix<pm::Rational>
+0 1 -1 0 -1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 -1/2 1/2 0 -1/2 1/2 0 1 -1 0 0 0 0 0 0 0 0 0 0 0
+0 -1/6 1/6 0 1/3 2/3 0 -7/6 -5/6 1 0 0 0 0 0 0 0 0 0 0
+
+QQMPolyRingElem[c2 - 2*c5 + c7]
+& [2 5 11 8 9 4 7] & [1 2 0 3] & nothing
+pm::Matrix<pm::Rational>
+0 0 0 0 -1 0 0 1 0 0 0 0 0 1 0 -1 0 0 0 0
+0 0 0 0 1/4 0 0 -5/4 0 1 0 0 0 3/4 0 -3/4 0 0 0 0
+
+QQMPolyRingElem[]
+& [10 11 13 9 15 4 7] & [2 3 0 1] & nothing
+pm::Matrix<pm::Rational>
+0 0 0 0 -1 0 0 0 0 0 1 0 0 1 0 0 -1 0 0 0
+0 0 0 0 -1/2 0 0 1 0 0 -1/2 0 0 1/2 0 -1 1/2 0 0 0
+0 0 0 0 1/3 0 0 -7/6 0 1 -1/6 0 0 2/3 0 -5/6 1/6 0 0 0
+
+QQMPolyRingElem[c7 - 2*c13 + c16]
+& [16 11 13 9 15 4 7] & [2 3 0 1] & nothing
+pm::Matrix<pm::Rational>
+0 0 0 0 0 0 0 0 -1 1 0 0 0 0 1 -1 0 0 0 0
+
+QQMPolyRingElem[-c3 + c8 + c12 - c15]
+& [3 11 14 9 15 6 8] & [0 2 3 1] & nothing
+pm::Matrix<pm::Rational>
+0 0 0 0 0 0 0 0 -1 1 0 0 0 0 1 -1 0 0 0 0
+
+QQMPolyRingElem[c3 - c8 - c12 + c15, c8 - c12 - c15 + c17]
+& [12 11 14 9 15 6 8] & [0 2 3 1] & nothing
+pm::Matrix<pm::Rational>
+0 0 0 0 0 0 0 0 -1 1 0 0 0 0 1 -1 0 0 0 0
+
+QQMPolyRingElem[-c8 + c12 + c15 - c17, c8 - c15 - c17 + c19]
+& [17 11 14 9 15 6 8] & [0 2 3 1] & nothing
+pm::Matrix<pm::Rational>
+0 0 0 0 0 0 0 0 -1 1 0 0 0 0 1 -1 0 0 0 0
+
+QQMPolyRingElem[-c8 + c15 + c17 - c19]
+& [19 11 14 9 15 6 8] & [0 2 3 1] & nothing
+pm::Matrix<pm::Rational>
+0 0 0 0 0 0 0 0 -1 1 0 0 0 0 1 -1 0 0 0 0
+
+QQMPolyRingElem[-c3 + c8 + c12 - c15]
+& [3 11 14 15 18 6 8] & [0 2 3 1] & nothing
+pm::Matrix<pm::Rational>
+0 0 0 0 0 0 0 0 -1 1 0 0 0 0 1 -1 0 0 0 0
+
+QQMPolyRingElem[c3 - c8 - c12 + c15, c8 - c12 - c15 + c17]
+& [12 11 14 15 18 6 8] & [0 2 3 1] & nothing
+pm::Matrix<pm::Rational>
+0 0 0 0 0 0 0 0 -1 1 0 0 0 0 1 -1 0 0 0 0
+
+QQMPolyRingElem[-c8 + c12 + c15 - c17, c8 - c15 - c17 + c19]
+& [17 11 14 15 18 6 8] & [0 2 3 1] & nothing
+pm::Matrix<pm::Rational>
+0 0 0 0 0 0 0 0 -1 1 0 0 0 0 1 -1 0 0 0 0
+
+QQMPolyRingElem[-c8 + c15 + c17 - c19]
+& [19 11 14 15 18 6 8] & [0 2 3 1] & nothing
