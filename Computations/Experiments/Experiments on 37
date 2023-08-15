@@ -1,6 +1,9 @@
-Experiments on 37
+# Experiments on 37
 
-1. Check which hyperplanes of secondary cone contain Motif 
+include("schlaefliwalls.jl")
+include("To be legible/37.jl")
+
+# 1. Check which hyperplanes of secondary cone contain Motif 
 for Mot in MotE
     visCone = visibilityConeE(Mot)
     hyp = filter(i -> pm.polytope.contains(pm.polytope.facet(SecCone,i),visCone), 0:18)
@@ -15,7 +18,7 @@ for Mot in MotE
     println("It has hyperplanes", hyp)
 end
 
-2. Check whether intersection of Schlaefli walls coincide and hyperplanes of hv motifs coincide with their alleged schlaefliwalls
+# 2. Check whether intersection of Schlaefli walls coincide and hyperplanes of hv motifs coincide with their alleged schlaefliwalls
 # for Mot in MotE
 #     visCone = visibilityConeE(Mot)
 #     i = 1; j = 1; Mot_A = MotA[1]; Mot_D = MotD[1]
@@ -51,7 +54,7 @@ for Mot in MotE
     end
 end
 
-3. Compute Hyperplane Arrangement
+# 3. Compute Hyperplane Arrangement
 SWs = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
 for Mot in MotA
     SW = SchlaefliWall(visibilityConeA(Mot))
@@ -63,14 +66,21 @@ for Mot in MotD
 end
 for Mot in MotE[[1,12,13]]
     SW = SchlaefliWall(visibilityConeE(Mot))
-    SWs = vcat(SWs, transpose(SW[1])) end end
+    SWs = vcat(SWs, transpose(SW[1]))
 end
 HA = pm.fan.HyperplaneArrangement(HYPERPLANES=SWs[2:nrows(SWs),:], SUPPORT=SecCone)
 CD = HA.CHAMBER_DECOMPOSITION
+nmc = CD.N_MAXIMAL_CONES
+nc = CD.N_CONES
 
-6. Compute minimal number of lines
+# 4. Compute minimal number of lines
 f_normals = Matrix{Int}(CD.FACET_NORMALS)
 mcones_facets = Matrix{Int}(CD.MAXIMAL_CONES_FACETS)
+
+# serialize and save Schläfli fan
+serialized = Polymake.call_function(Symbol("Core::Serializer"), :serialize, HA)
+Polymake.call_function(:common, :encode_json, serialized)
+write("SchlaefliFan37.json", Polymake.call_function(:common, :encode_json, serialized))
 
 for i in 1:nrows(mcones_facets)
     cone_facets = mcones_facets[i,:]
@@ -88,15 +98,3 @@ for i in 1:nrows(mcones_facets)
     end
     println(count)
 end
-
-&SH_{47}: c_{11} - c_{12} - c_{13} + c_{15} + c_{17} - c_{18}
-&SH_{48}: c_{11} - c_{13} + c_{15} - c_{17} - c_{18} + c_{19} \\
-&SH_{49}: 2c_{7} - c_{8} - c_{10} + c_{11} - 2c_{13} + c_{16}
-&SH_{50}: c_{0} - c_{1} - c_{4} + c_{7} + c_{11} - c_{13} \\
-&SH_{51}: c_{1} - c_{2} - c_{4} + c_{7} + c_{11} - c_{13}
-&SH_{52}: -c_{11} + c_{13} + c_{14} - c_{15} \\
-&SH_{53}: 2c_{7} - c_{8} + c_{11} - 3c_{13} + c_{18}
-&SH_{54}: -c_{4} + 3c_{7} - c_{8} - c_{9} + c_{11} - 2c_{13} + c_{15} \\
-&SH_{55}: c_{7} - c_{8} - c_{9} + c_{11} - 2c_{13} + 3c_{15} - c_{18}
-&SH_{56}: c_{5} - c_{7} - c_{11} + c_{13} \\
-&SH_{57}: 2c_{4} - 4c_{7} + c_{8} + c_{9} - c_{11} + c_{13}

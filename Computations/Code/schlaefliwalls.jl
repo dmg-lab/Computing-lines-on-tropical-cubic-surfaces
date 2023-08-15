@@ -295,8 +295,8 @@ function visibilityConeE(Mot)
 	Hyp1 = map(f-> evaluate(f, [x, y, z], [V1[1], V1[2], V1[3]]), FF);
 	Hyp2 = map(f-> evaluate(f, [x, y, z], [V2[1], V2[2], V2[3]]), FF);
 	
-	Ineq1 = map(f -> f - Hyp1[Mot[1][2] + 1], Hyp1)
-	Ineq2 = map(f -> f - Hyp2[Mot[1][2] + 1], Hyp2)
+	Ineq1 = map(f -> f - Hyp1[Mot[1][1] + 1], Hyp1)
+	Ineq2 = map(f -> f - Hyp2[Mot[1][3] + 1], Hyp2)
 	Totineq = vcat(Ineq1, Ineq2)
 	IM = transpose(matrix_from_vectors(map(f -> map(v -> coeff(f, v), Vars), Totineq)))
 	cone = pm.polytope.Cone(INEQUALITIES=IM[filter(i->!iszero(IM[i,:]), 1:nrows(IM)), :])

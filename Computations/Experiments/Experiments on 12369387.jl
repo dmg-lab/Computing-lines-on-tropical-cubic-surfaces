@@ -1,6 +1,6 @@
 MotE_hv = filter(Mot -> pm.polytope.dim(visibilityConeE(Mot)) < 20, MotE)
 
-1. Check if visibility cones of hv motifs are contained in a face of secondary cone, if so check if they coincide
+# 1. Check if visibility cones of hv motifs are contained in a face of secondary cone, if so check if they coincide
 for Mot in MotE_hv 
     visCone = visibilityConeE(Mot)
     hyp = filter(i -> pm.polytope.contains(pm.polytope.facet(SecCone,i),visCone), 0:15)
@@ -16,7 +16,7 @@ for Mot in MotE_hv
     println("The visibility cone of motif ", Mot[1], " coincides with a face of the secondary cone ", pm.polytope.equal_polyhedra(f, visCone))
 end
 
-2. Compute Schläfli fan
+# 2. Compute Schläfli fan
 SWs = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
 for Mot in MotA
     SW = SchlaefliWall(visibilityConeA(Mot))
@@ -31,18 +31,25 @@ for Mot in MotD
     if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
 end
 for Mot in MotE
-    SW = SchlaefliWall(visibilityConeE(Mot))
-    if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
+    if !(Mot in MotE_hv)
+         SW = SchlaefliWall(visibilityConeE(Mot))
+        if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
     end
 end
 
 HA = pm.fan.HyperplaneArrangement(HYPERPLANES=SWs[2:nrows(SWs),:], SUPPORT=SecCone)
 CD = HA.CHAMBER_DECOMPOSITION
-CD.N_MAXIMAL_CONES
+nmc = CD.N_MAXIMAL_CONES
 
-3. Compute minimal number of lines
+# 3. Compute minimal number of lines
 f_normals = Matrix{Int}(CD.FACET_NORMALS)
 mcones_facets = Matrix{Int}(CD.MAXIMAL_CONES_FACETS)
+f_vector = CD.F_VECTOR
+
+# serialize and save Schläfli fan
+serialized = Polymake.call_function(Symbol("Core::Serializer"), :serialize, HA)
+Polymake.call_function(:common, :encode_json, serialized)
+write("SchlaefliFan12369387.json", Polymake.call_function(:common, :encode_json, serialized))
 
 for i in 1:nrows(mcones_facets)
     cone_facets = mcones_facets[i,:]
@@ -56,6 +63,7 @@ for i in 1:nrows(mcones_facets)
     end
     for Mot in MotB
         visCone = visibilityConeB(Mot)
+        if pm.polytope.contains(visCone, cone) count += 1 end
     for Mot in MotD
         visCone = visibilityConeD(Mot)
         if pm.polytope.contains(visCone, cone) count += 1 end

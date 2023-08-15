@@ -1,40 +1,39 @@
 # Experiments on 5054117
 include("schlaefliwalls.jl")
-include("5054117.jl")
+include("To be legible/5054117.jl")
 
-
-1. Check whether hv Mot n°8 coincides with a facet of secondary cone
+# 1. Check whether hv Mot n°8 coincides with a facet of secondary cone
 MotH_hv = filter(Mot -> pm.polytope.dim(visibilityConeH(Mot))< 20, MotH)
 visibilityC = visibilityConeH(MotH_hv[1])
 F = pm.polytope.facet(SecCone, 6)
 pm.polytope.equal_polyhedra(visibilityC,F)
 
-2. Check whether hv Mot n°1 coincdes with facet of secondary cone
+# 2. Check whether hv Mot n°1 coincdes with facet of secondary cone
 Mot = MotD[2]
 visibilityC = visibilityConeD(Mot)
 F = pm.polytope.facet(SecCone, 13)
 pm.polytope.equal_polyhedra(visibilityC,F)
 
-3. Each visiblity Cone is contained in a facet of 
+# 3. Each visiblity Cone is contained in a facet of the secondary cone
 MotD_hv = filter(Mot -> pm.polytope.dim(visibilityConeD(Mot))< 20, MotD)
 for Mot in MotD_hv
     i = 0
     visCone = visibilityConeD(Mot)
-    while !(pm.polytope.contains(pm.polytope.facet(SecCone, i),visCone)) && i<15
+    while !(pm.polytope.contains(pm.polytope.facet(SecCone, i),visCone)) && i< SecCone.N_FACETS -1
         i += 1
     end
     println(i) # If i is equal to 15 the visibility cone is not contained in a facet, if i < 15 it is contained in facet(SecCone, i)
 end
 
-3. Check which facets contain which visibility cones
+# 3. Check which facets contain which visibility cones
 for Mot in MotD_hv
     visCone = visibilityConeD(Mot)
     println("Motif: ", Mot[1], " is contained in facets")
-    hyp = filter(i -> pm.polytope.contains(pm.polytope.facet(SecCone,i),visCone), 0:15)
+    hyp = filter(i -> pm.polytope.contains(pm.polytope.facet(SecCone,i),visCone), 0:SecCone.N_FACETS -1)
     println(hyp) # prints all facets of the secondary cone containing the visibility cone
 end
 
-4. Check that visibility cones coincide with faces
+# 4. Check that visibility cones coincide with faces
 for Mot in MotD_hv 
     visCone = visibilityConeD(Mot)
     hyp = filter(i -> pm.polytope.contains(pm.polytope.facet(SecCone,i),visCone), 0:15)
@@ -48,130 +47,134 @@ for Mot in MotD_hv
     println("Motif ", Mot[1], " coincides with a face of the visibility cone ", pm.polytope.equal_polyhedra(f, visCone))
 end
 
-5. Compute Hyperplane Arrangement
-SWs = Set()
+# 5. Compute Hyperplane Arrangement
+SWs = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
 for Mot in MotA
     SW = SchlaefliWall(visibilityConeA(Mot))
-    if SW != [] for W in SW push!(SWs,W) end end
+    if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
 end
 for Mot in MotB 
     SW = SchlaefliWall(visibilityConeB(Mot))
-	if SW != [] for W in SW push!(SWs,W) end end
+    if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
 end
 for Mot in MotC
     SW = SchlaefliWall(visibilityConeC(Mot))
-	if SW != [] for W in SW push!(SWs,W) end end
+    if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
 end
 for Mot in MotD 
 	if !(Mot in MotD_hv) 
         SW = SchlaefliWall(visibilityConeD(Mot)) 
-        if SW != [] for W in SW push!(SWs,W) end end
+        if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
     end
 end
 for Mot in MotE 
     SW = SchlaefliWall(visibilityConeH(Mot))
-	if SW != [] for W in SW push!(SWs,W) end end
+    if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
 end
 for Mot in MotH
     visCone = visibilityConeH(Mot)
-	if pm.polytope.dim(visCone) == 20 SW = SchlaefliWall(visCone) end
-    if SW != [] for W in SW push!(SWs,W) end end
+	if pm.polytope.dim(visCone) == 20 
+        SW = SchlaefliWall(visCone)
+        if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
+    end
 end
 for Mot in MotJ 
     SW = SchlaefliWall(visibilityConeJ(Mot))
-	if SW != [] for W in SW push!(SWs,W) end end
+    if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
 end
 
-# Switch to polymake
-$SWs = [[0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, -2, 1],
-[0, 1, 0, 0, 0, 0, 0, 0, 0, -1, 0, -2, 0, 0, 0, 2, 0, 1, -1, 0],
-[0, 0, 1, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 2, 0, -1, -1, 1],
-[0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, -1, -2, 1],
-[0, 1, 0, 0, 0, 0, 0, -1, 0, 1, 0, -1, 0, 0, 0, -1, 0, 0, 1, 0],
-[0, 1, 0, 0, 0, 0, 0, 0, 0, -1, 0, -2, 0, 0, 0, 1, 0, 1, 1, -1],
-[0, -1, 0, 0, 0, 0, 0, 1, 0, -1, 0, 1, 0, 0, 0, 1, 0, 0, -1, 0],
-[0, 0, 1, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 1, 0, -1, 1, 0],
-[0, 0, -1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, -2, 0, 1, 1, -1],
-[0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, -2, 0, 0, 0, -1, 0, 1, 2, -1],
-[0, 0, -1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, -1, 0, 1, -1, 0],
-[0, -1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, -2, 0, -1, 1, 0],
-[0, -1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, -1, 0, -1, -1, 1],
-[0, 0, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 2, -1]];
+# $SWs = [[0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, -2, 1],
+# [0, 1, 0, 0, 0, 0, 0, 0, 0, -1, 0, -2, 0, 0, 0, 2, 0, 1, -1, 0],
+# [0, 0, 1, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 2, 0, -1, -1, 1],
+# [0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, -1, -2, 1],
+# [0, 1, 0, 0, 0, 0, 0, -1, 0, 1, 0, -1, 0, 0, 0, -1, 0, 0, 1, 0],
+# [0, 1, 0, 0, 0, 0, 0, 0, 0, -1, 0, -2, 0, 0, 0, 1, 0, 1, 1, -1],
+# [0, -1, 0, 0, 0, 0, 0, 1, 0, -1, 0, 1, 0, 0, 0, 1, 0, 0, -1, 0],
+# [0, 0, 1, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 1, 0, -1, 1, 0],
+# [0, 0, -1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, -2, 0, 1, 1, -1],
+# [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, -2, 0, 0, 0, -1, 0, 1, 2, -1],
+# [0, 0, -1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, -1, 0, 1, -1, 0],
+# [0, -1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, -2, 0, -1, 1, 0],
+# [0, -1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, -1, 0, -1, -1, 1],
+# [0, 0, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 2, -1]];
 
-application 'fan';
-$X = retrieve_by_id(5054117); #This is not possible within OSCAR!
-$SecCone = $X->SECONDARY_CONE;
-$HA = new HyperplaneArrangement(HYPERPLANES=>$SWs, "SUPPORT"=>$SecCone);
-$CD = $HA->CHAMBER_DECOMPOSITION;
+
+HA = pm.fan.HyperplaneArrangement(HYPERPLANES=SWs, SUPPORT=SecCone)
+CD = HA.CHAMBER_DECOMPOSITION
 
 # Compute number of maximal cones, f-vector
-print $CD->N_MAXIMAL_CONES; # 36
-print $CD->F_VECTOR;
+CD.N_MAXIMAL_CONES # 36
+CD.F_VECTOR
+CD.N_CONES
 
-6. Compute minimal number of lines
-print $CD->FACET_NORMALS;
+# 6. Compute minimal number of lines
+f_normals = CD.FACET_NORMALS
 # import result in OSCAR
-f_normals = [0 0 0 0 1 0 0 -1 0 0 0 0 0 -1 0 0 0 0 2 -1;
-0 0 0 0 -1 0 0 0 0 0 0 0 0 1 0 0 1 0 0 -1;
-0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 -2 0 0 1;
-1 0 0 0 0 0 0 0 0 0 -2 0 0 0 0 0 1 0 0 0;
-0 0 0 1 0 0 -2 0 1 0 0 0 0 0 0 0 0 0 0 0;
-0 0 0 1 0 0 0 0 0 0 0 0 -2 0 0 0 0 1 0 0;
-0 0 1 -1 0 0 0 0 0 0 0 -1 1 0 0 0 0 0 0 0;
-0 0 0 0 0 0 1 0 -2 1 0 0 0 0 0 0 0 0 0 0;
-0 1 0 0 0 0 0 0 0 -1 0 -2 0 0 0 1 0 1 1 -1;
-0 0 0 0 0 0 0 0 1 -1 0 0 0 0 -1 1 0 0 0 0;
-0 0 -1 0 0 0 0 0 0 1 0 1 0 0 1 -2 0 0 0 0;
-0 -1 0 0 0 0 0 1 0 0 0 1 0 0 0 -1 0 0 0 0;
-0 0 1 0 0 0 0 0 0 -1 0 -1 0 0 0 1 0 -1 1 0;
-0 1 0 0 0 0 0 -1 0 1 0 -1 0 0 0 -1 0 0 1 0;
-0 0 0 0 0 0 0 1 0 0 0 0 0 -1 0 0 0 0 -1 1;
-0 0 0 0 0 1 0 0 0 -1 0 -1 0 0 0 1 0 0 0 0;
-0 0 0 0 0 0 0 -1 0 0 0 0 0 1 0 1 0 0 -1 0;
-0 1 1 0 0 -3 0 0 0 1 0 0 0 0 0 0 0 0 0 0;
-0 1 0 0 0 0 0 0 0 0 0 -2 0 0 0 -1 0 1 2 -1;
-0 1 0 0 0 0 0 0 0 -1 0 -2 0 0 0 2 0 1 -1 0;
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 -1 0 -1 1 0;
-0 0 0 0 1 0 0 0 0 0 0 0 0 -2 0 0 0 0 1 0;
-0 0 -1 0 0 0 0 0 0 1 0 1 0 0 0 -2 0 1 1 -1]
-print $CD->MAXIMAL_CONES_FACETS;
-# import result in OSCAR
-mcones_facets = [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0;
-1 1 1 1 1 1 1 1 -1 1 1 1 1 1 1 1 1 1 1 1 0 0 0;
--1 1 1 1 1 1 1 1 0 1 0 0 0 -1 0 1 1 1 0 0 1 1 1;
-1 1 1 1 1 1 1 1 1 1 1 0 1 -1 1 1 1 1 0 0 0 0 0;
-1 1 1 1 1 1 1 1 -1 1 0 1 -1 1 1 1 1 1 1 0 1 0 0;
-1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 -1 1 0 0 0;
-1 1 1 1 1 1 1 1 0 1 1 0 1 -1 1 1 1 1 -1 1 0 0 0;
-1 1 1 1 1 1 1 1 1 1 0 0 -1 -1 1 1 1 1 0 0 1 0 -1;
-1 1 1 1 1 1 1 1 0 1 1 1 0 1 1 1 1 1 -1 -1 0 0 0;
-1 1 1 1 1 1 1 1 0 1 1 0 0 -1 1 1 1 1 -1 -1 0 0 0;
-1 1 1 1 1 1 1 1 0 1 1 0 0 -1 1 1 1 1 1 -1 0 0 0;
-1 1 1 1 1 1 1 1 -1 1 0 0 -1 -1 1 1 1 1 1 0 1 0 0;
--1 1 1 1 1 1 1 1 0 1 1 1 0 1 0 1 1 1 -1 -1 0 1 0;
--1 1 1 1 1 1 1 1 0 1 1 0 0 -1 0 1 1 1 -1 -1 0 1 0;
--1 1 1 1 1 1 1 1 0 1 1 0 0 -1 0 1 1 1 1 -1 0 1 0;
-1 1 1 1 1 1 1 1 -1 1 1 0 1 -1 1 1 1 1 1 1 0 0 0;
--1 1 1 1 1 1 1 1 -1 1 1 0 1 -1 0 1 1 1 1 1 0 1 0;
--1 1 1 1 1 1 1 1 -1 1 0 0 -1 -1 0 1 1 1 1 0 1 1 0;
--1 1 1 1 1 1 1 1 1 1 1 0 1 -1 0 1 1 1 0 0 0 1 0;
--1 1 1 1 1 1 1 1 0 1 0 0 -1 -1 0 1 1 1 -1 0 1 1 0;
--1 1 1 1 1 1 1 1 0 1 1 0 1 -1 0 1 1 1 -1 1 0 1 0;
--1 1 1 1 1 1 1 1 1 1 0 1 -1 1 0 1 1 1 0 0 1 1 -1;
--1 1 1 1 1 1 1 1 0 1 1 1 0 1 0 1 1 1 1 -1 0 1 0;
--1 1 1 1 1 1 1 1 0 1 0 1 -1 1 0 1 1 1 -1 0 1 1 0;
--1 1 1 1 1 1 1 1 0 1 1 1 1 1 0 1 1 1 -1 1 0 1 0;
-1 1 1 1 1 1 1 1 0 1 1 1 0 1 1 1 1 1 1 -1 0 0 0;
-1 1 1 1 1 1 1 1 0 1 0 0 0 -1 1 1 1 1 0 0 1 0 1;
-1 1 1 1 1 1 1 1 0 1 0 0 -1 -1 1 1 1 1 -1 0 1 0 0;
-1 1 1 1 1 1 1 1 0 1 0 1 -1 1 1 1 1 1 -1 0 1 0 0;
--1 1 1 1 1 1 1 1 -1 1 0 1 -1 1 0 1 1 1 1 0 1 1 0;
--1 1 1 1 1 1 1 1 1 1 0 0 -1 -1 0 1 1 1 0 0 1 1 -1;
--1 1 1 1 1 1 1 1 -1 1 1 1 1 1 0 1 1 1 1 1 0 1 0;
--1 1 1 1 1 1 1 1 0 1 0 1 0 1 0 1 1 1 0 0 1 1 1;
-1 1 1 1 1 1 1 1 0 1 0 1 0 1 1 1 1 1 0 0 1 0 1;
-1 1 1 1 1 1 1 1 1 1 0 1 -1 1 1 1 1 1 0 0 1 0 -1;
--1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 0 0 0 1 0]
+# f_normals = [0 0 0 0 1 0 0 -1 0 0 0 0 0 -1 0 0 0 0 2 -1;
+# 0 0 0 0 -1 0 0 0 0 0 0 0 0 1 0 0 1 0 0 -1;
+# 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 -2 0 0 1;
+# 1 0 0 0 0 0 0 0 0 0 -2 0 0 0 0 0 1 0 0 0;
+# 0 0 0 1 0 0 -2 0 1 0 0 0 0 0 0 0 0 0 0 0;
+# 0 0 0 1 0 0 0 0 0 0 0 0 -2 0 0 0 0 1 0 0;
+# 0 0 1 -1 0 0 0 0 0 0 0 -1 1 0 0 0 0 0 0 0;
+# 0 0 0 0 0 0 1 0 -2 1 0 0 0 0 0 0 0 0 0 0;
+# 0 1 0 0 0 0 0 0 0 -1 0 -2 0 0 0 1 0 1 1 -1;
+# 0 0 0 0 0 0 0 0 1 -1 0 0 0 0 -1 1 0 0 0 0;
+# 0 0 -1 0 0 0 0 0 0 1 0 1 0 0 1 -2 0 0 0 0;
+# 0 -1 0 0 0 0 0 1 0 0 0 1 0 0 0 -1 0 0 0 0;
+# 0 0 1 0 0 0 0 0 0 -1 0 -1 0 0 0 1 0 -1 1 0;
+# 0 1 0 0 0 0 0 -1 0 1 0 -1 0 0 0 -1 0 0 1 0;
+# 0 0 0 0 0 0 0 1 0 0 0 0 0 -1 0 0 0 0 -1 1;
+# 0 0 0 0 0 1 0 0 0 -1 0 -1 0 0 0 1 0 0 0 0;
+# 0 0 0 0 0 0 0 -1 0 0 0 0 0 1 0 1 0 0 -1 0;
+# 0 1 1 0 0 -3 0 0 0 1 0 0 0 0 0 0 0 0 0 0;
+# 0 1 0 0 0 0 0 0 0 0 0 -2 0 0 0 -1 0 1 2 -1;
+# 0 1 0 0 0 0 0 0 0 -1 0 -2 0 0 0 2 0 1 -1 0;
+# 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 -1 0 -1 1 0;
+# 0 0 0 0 1 0 0 0 0 0 0 0 0 -2 0 0 0 0 1 0;
+# 0 0 -1 0 0 0 0 0 0 1 0 1 0 0 0 -2 0 1 1 -1]
+mcones_facets = CD.MAXIMAL_CONES_FACETS
+# mcones_facets = [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0;
+# 1 1 1 1 1 1 1 1 -1 1 1 1 1 1 1 1 1 1 1 1 0 0 0;
+# -1 1 1 1 1 1 1 1 0 1 0 0 0 -1 0 1 1 1 0 0 1 1 1;
+# 1 1 1 1 1 1 1 1 1 1 1 0 1 -1 1 1 1 1 0 0 0 0 0;
+# 1 1 1 1 1 1 1 1 -1 1 0 1 -1 1 1 1 1 1 1 0 1 0 0;
+# 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 -1 1 0 0 0;
+# 1 1 1 1 1 1 1 1 0 1 1 0 1 -1 1 1 1 1 -1 1 0 0 0;
+# 1 1 1 1 1 1 1 1 1 1 0 0 -1 -1 1 1 1 1 0 0 1 0 -1;
+# 1 1 1 1 1 1 1 1 0 1 1 1 0 1 1 1 1 1 -1 -1 0 0 0;
+# 1 1 1 1 1 1 1 1 0 1 1 0 0 -1 1 1 1 1 -1 -1 0 0 0;
+# 1 1 1 1 1 1 1 1 0 1 1 0 0 -1 1 1 1 1 1 -1 0 0 0;
+# 1 1 1 1 1 1 1 1 -1 1 0 0 -1 -1 1 1 1 1 1 0 1 0 0;
+# -1 1 1 1 1 1 1 1 0 1 1 1 0 1 0 1 1 1 -1 -1 0 1 0;
+# -1 1 1 1 1 1 1 1 0 1 1 0 0 -1 0 1 1 1 -1 -1 0 1 0;
+# -1 1 1 1 1 1 1 1 0 1 1 0 0 -1 0 1 1 1 1 -1 0 1 0;
+# 1 1 1 1 1 1 1 1 -1 1 1 0 1 -1 1 1 1 1 1 1 0 0 0;
+# -1 1 1 1 1 1 1 1 -1 1 1 0 1 -1 0 1 1 1 1 1 0 1 0;
+# -1 1 1 1 1 1 1 1 -1 1 0 0 -1 -1 0 1 1 1 1 0 1 1 0;
+# -1 1 1 1 1 1 1 1 1 1 1 0 1 -1 0 1 1 1 0 0 0 1 0;
+# -1 1 1 1 1 1 1 1 0 1 0 0 -1 -1 0 1 1 1 -1 0 1 1 0;
+# -1 1 1 1 1 1 1 1 0 1 1 0 1 -1 0 1 1 1 -1 1 0 1 0;
+# -1 1 1 1 1 1 1 1 1 1 0 1 -1 1 0 1 1 1 0 0 1 1 -1;
+# -1 1 1 1 1 1 1 1 0 1 1 1 0 1 0 1 1 1 1 -1 0 1 0;
+# -1 1 1 1 1 1 1 1 0 1 0 1 -1 1 0 1 1 1 -1 0 1 1 0;
+# -1 1 1 1 1 1 1 1 0 1 1 1 1 1 0 1 1 1 -1 1 0 1 0;
+# 1 1 1 1 1 1 1 1 0 1 1 1 0 1 1 1 1 1 1 -1 0 0 0;
+# 1 1 1 1 1 1 1 1 0 1 0 0 0 -1 1 1 1 1 0 0 1 0 1;
+# 1 1 1 1 1 1 1 1 0 1 0 0 -1 -1 1 1 1 1 -1 0 1 0 0;
+# 1 1 1 1 1 1 1 1 0 1 0 1 -1 1 1 1 1 1 -1 0 1 0 0;
+# -1 1 1 1 1 1 1 1 -1 1 0 1 -1 1 0 1 1 1 1 0 1 1 0;
+# -1 1 1 1 1 1 1 1 1 1 0 0 -1 -1 0 1 1 1 0 0 1 1 -1;
+# -1 1 1 1 1 1 1 1 -1 1 1 1 1 1 0 1 1 1 1 1 0 1 0;
+# -1 1 1 1 1 1 1 1 0 1 0 1 0 1 0 1 1 1 0 0 1 1 1;
+# 1 1 1 1 1 1 1 1 0 1 0 1 0 1 1 1 1 1 0 0 1 0 1;
+# 1 1 1 1 1 1 1 1 1 1 0 1 -1 1 1 1 1 1 0 0 1 0 -1;
+# -1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 0 0 0 1 0]
+
+# serialize and save Schläfli fan
+serialized = Polymake.call_function(Symbol("Core::Serializer"), :serialize, HA)
+Polymake.call_function(:common, :encode_json, serialized)
+write("SchlaefliFan5054117.json", Polymake.call_function(:common, :encode_json, serialized))
 
 for i in 1:nrows(mcones_facets)
     cone_facets = mcones_facets[i,:]
@@ -216,59 +219,3 @@ for i in 1:nrows(mcones_facets)
     println(count, familycount)
 end
 
-7. Compute maximal number of lines 
-for i in 1:nrows(mcones_facets)
-    cone_facets = mcones_facets[i,:]
-    ineq_pos = f_normals[filter(i -> cone_facets[i] > 0,1:ncols(mcones_facets)),:]
-    ineq = vcat(ineq_pos,-f_normals[filter(i -> cone_facets[i] < 0,1:ncols(mcones_facets)),:])
-    cone = pm.polytope.Cone(INEQUALITIES=ineq)
-    count = 0
-    for Mot in MotA
-        visCone = visibilityConeA(Mot)
-        if pm.polytope.dim(pm.polytope.intersection(visCone, cone)) > 0 count += 1 end
-    end
-    
-    for Mot in MotB
-        visCone = visibilityConeB(Mot)
-        if pm.polytope.dim(pm.polytope.intersection(visCone, cone)) > 0 count += 1 end
-    end
-    
-    for Mot in MotC
-        visCone = visibilityConeC(Mot)
-        if pm.polytope.dim(pm.polytope.intersection(visCone, cone)) > 0 count += 1 end
-    end
-    
-    for Mot in MotD
-        visCone = visibilityConeD(Mot)
-        if pm.polytope.dim(pm.polytope.intersection(visCone, cone)) > 0 count += 1 end
-    end
-    
-    for Mot in MotE
-        visCone = visibilityConeE(Mot)
-        if pm.polytope.dim(pm.polytope.intersection(visCone, cone)) > 0 count += 1 end
-    end
-    
-    for Mot in MotH
-        visCone = visibilityConeH(Mot)
-        if pm.polytope.dim(pm.polytope.intersection(visCone, cone)) > 0 count += 1 end
-    end
-    
-    familycount = 0
-    for Mot in MotJ
-        visCone = visibilityConeJ(Mot)
-        if pm.polytope.dim(pm.polytope.intersection(visCone, cone)) > 0 familycountcount += 1 end
-    end
-    println(count, familycount)
-end
-
-# 8. Check for hardly visible Motifs
-# sec_normals = filter(i -> transpose(f_normals[i,:])*Vars in FSecCone, 1:23)
-
-# for i in 1:36 
-#         cone_facets = mcones_facets[i,:]
-#         ineq_pos = f_normals[filter(i -> cone_facets[i] > 0,1:ncols(mcones_facets)),:]
-#         ineq = vcat(ineq_pos,-f_normals[filter(i -> cone_facets[i] < 0,1:ncols(mcones_facets)),:])
-#         cone = pm.polytope.Cone(INEQUALITIES=ineq)
-#         if pm.polytope.contains(cone, visCone) println(i) end
-#     end
-# end
