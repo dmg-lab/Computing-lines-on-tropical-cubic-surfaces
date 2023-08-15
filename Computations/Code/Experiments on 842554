@@ -1,4 +1,5 @@
 # Experiments on 842554
+using Oscar
 include("schlaefliwalls.jl")
 include("To be legible/842554.jl")
 
@@ -46,11 +47,11 @@ end
 HA = pm.fan.HyperplaneArrangement(HYPERPLANES=SWs[2:nrows(SWs),:], SUPPORT=SecCone)
 CD = HA.CHAMBER_DECOMPOSITION
 CD.N_MAXIMAL_CONES
-nc = CD.N_CONES
+Threads.@spawn nc = CD.N_CONES
 
 # Compute minimal number of lines
-f_normals = Matrix{Int}(CD.FACET_NORMALS)
-mcones_facets = Matrix{Int}(CD.MAXIMAL_CONES_FACETS)
+Threads.@spwan f_normals = Matrix{Int}(CD.FACET_NORMALS)
+Threads.@spwan mcones_facets = Matrix{Int}(CD.MAXIMAL_CONES_FACETS)
 
 serialized = Polymake.call_function(Symbol("Core::Serializer"), :serialize, HA)
 Polymake.call_function(:common, :encode_json, serialized)
