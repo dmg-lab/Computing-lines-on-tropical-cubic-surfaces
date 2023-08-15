@@ -52,24 +52,45 @@ MotH = [[[9 15 2 14 3],[1 3 2 0]],[[18 19 1 13 4],[0 2 1 3]],[[7 15 1 18 19],[0 
 MotJ = [[[11 9 15 1 2],[0 3 1 2]]]
 
 for Mot in MotA
-	SchlaefliA(Mot)
+	println("MotifA: ", Mot[1])
+	visibilityC = visibilityConeA(Mot)
+	SWs = SchlaefliWall(visibilityC)
+	for SW in SWs println(transpose(Vars)*SW) end
 end
 for Mot in MotB 
-	SchlaefliB(Mot)
+	println("MotifB: ", Mot[1])
+	visibilityC = visibilityConeB(Mot)
+	SWs = SchlaefliWall(visibilityC)
+	for SW in SWs println(transpose(Vars)*SW) end
 end
 for Mot in MotC
-	SchlaefliC(Mot)
+	println("MotifC: ", Mot[1])
+	visibilityC = visibilityConeC(Mot)
+	SWs = SchlaefliWall(visibilityC)
+	for SW in SWs println(transpose(Vars)*SW) end
 end
 for Mot in MotD 
-	SchlaefliD(Mot)
+	println("MotifD: ", Mot[1])
+	visibilityC = visibilityConeD(Mot)
+	SWs = SchlaefliWall(visibilityC)
+	for SW in SWs println(transpose(Vars)*SW) end
 end
 for Mot in MotE 
-	SchlaefliE(Mot)
+	println("MotifE: ", Mot[1])
+	visibilityC = visibilityConeE(Mot)
+	SWs = SchlaefliWall(visibilityC)
+	for SW in SWs println(transpose(Vars)*SW) end
 end
 for Mot in MotH
-	SchlaefliH(Mot)
+	println("MotifH: ", Mot[1])
+	visibilityC = visibilityConeH(Mot)
+	SWs = SchlaefliWall(visibilityC)
+	for SW in SWs println(transpose(Vars)*SW) end
 end
 for Mot in MotJ 
-	SchlaefliJ(Mot)
+	println("MotifJ: ", Mot[1])
+	visibilityC = visibilityConeJ(Mot)
+	SWs = SchlaefliWall(visibilityC)
+	for SW in SWs println(transpose(Vars)*SW) end
 end
 
