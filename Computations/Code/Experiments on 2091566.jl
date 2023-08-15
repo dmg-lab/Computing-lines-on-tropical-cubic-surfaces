@@ -65,12 +65,13 @@ for Mot in MotE
 end
 HA = pm.fan.HyperplaneArrangement(HYPERPLANES=SWs[2:nrows(SWs),:], SUPPORT=SecCone)
 CD = HA.CHAMBER_DECOMPOSITION
-CD.N_MAXIMAL_CONES
+Threads.@spwan CD.N_MAXIMAL_CONES
+Threads.@spwan CD.N_CONES
 
 # Prepare for computation of number of lines on a surface generic enough
-f_normals = Matrix{Int}(CD.FACET_NORMALS)
-mcones_facets = Matrix{Int}(CD.MAXIMAL_CONES_FACETS)
-f_vector = CD.F_VECTOR
+Threads.@spwan f_normals = Matrix{Int}(CD.FACET_NORMALS)
+Threads.@spwan mcones_facets = Matrix{Int}(CD.MAXIMAL_CONES_FACETS)
+Threads.@spwan f_vector = CD.F_VECTOR
 
 # Serialze and save Schläfli fan
 serialized = Polymake.call_function(Symbol("Core::Serializer"), :serialize, HA)
