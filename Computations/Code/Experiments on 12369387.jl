@@ -17,27 +17,27 @@ for Mot in MotE_hv
 end
 
 # 2. Compute Schläfli fan
-SWs = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+SWs = Matrix{Int}(undef, 0, 20)
 for Mot in MotA
     SW = SchlaefliWall(visibilityConeA(Mot))
-    if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
+    if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
 end
 for Mot in MotB
     SW = SchlaefliWall(visibilityConeB(Mot))
-    if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
+    if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
 end
 for Mot in MotD 
 	SW = SchlaefliWall(visibilityConeD(Mot)) 
-    if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
+    if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
 end
 for Mot in MotE
     if !(Mot in MotE_hv)
          SW = SchlaefliWall(visibilityConeE(Mot))
-        if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
+        if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
     end
 end
 
-HA = pm.fan.HyperplaneArrangement(HYPERPLANES=SWs[2:nrows(SWs),:], SUPPORT=SecCone)
+HA = pm.fan.HyperplaneArrangement(HYPERPLANES=SWs, SUPPORT=SecCone)
 CD = HA.CHAMBER_DECOMPOSITION
 nmc = CD.N_MAXIMAL_CONES
 

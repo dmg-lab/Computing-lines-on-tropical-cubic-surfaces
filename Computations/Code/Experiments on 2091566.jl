@@ -38,40 +38,39 @@ for Mot in MotE_hv
 end
 
 # Compute Schläfli hyperplanes
-SWs = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+SWs = Matrix{Int}(undef, 0, 20)
 for Mot in MotA
     SW = SchlaefliWall(visibilityConeA(Mot))
-    if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
+    if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
 end
 for Mot in MotB
     SW = SchlaefliWall(visibilityConeB(Mot))
-    if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
+    if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
 end
 for Mot in MotC
     if !(Mot in MotC_hv)
         SW = SchlaefliWall(visibilityConeC(Mot))
-        if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
+        if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
     end
 end
 for Mot in MotD 
 	SW = SchlaefliWall(visibilityConeD(Mot)) 
-    if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
+    if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
 end
 for Mot in MotE
     if !(Mot in MotE_hv)
         SW = SchlaefliWall(visibilityConeE(Mot))
-        if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
+        if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
     end
 end
-HA = pm.fan.HyperplaneArrangement(HYPERPLANES=SWs[2:nrows(SWs),:], SUPPORT=SecCone)
+HA = pm.fan.HyperplaneArrangement(HYPERPLANES=SWs, SUPPORT=SecCone)
 CD = HA.CHAMBER_DECOMPOSITION
-Threads.@spwan CD.N_MAXIMAL_CONES
-Threads.@spwan CD.N_CONES
+CD.N_MAXIMAL_CONES
 
 # Prepare for computation of number of lines on a surface generic enough
-Threads.@spwan f_normals = Matrix{Int}(CD.FACET_NORMALS)
-Threads.@spwan mcones_facets = Matrix{Int}(CD.MAXIMAL_CONES_FACETS)
-Threads.@spwan f_vector = CD.F_VECTOR
+f_normals = Matrix{Int}(CD.FACET_NORMALS)
+mcones_facets = Matrix{Int}(CD.MAXIMAL_CONES_FACETS)
+f_vector = CD.F_VECTOR
 
 # Serialze and save Schläfli fan
 serialized = Polymake.call_function(Symbol("Core::Serializer"), :serialize, HA)

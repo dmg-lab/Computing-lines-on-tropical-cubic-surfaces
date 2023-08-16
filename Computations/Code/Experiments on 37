@@ -55,23 +55,22 @@ for Mot in MotE
 end
 
 # 3. Compute Hyperplane Arrangement
-SWs = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+SWs = Matrix{Int}(undef, 0, 20)
 for Mot in MotA
     SW = SchlaefliWall(visibilityConeA(Mot))
-    if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
+    if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
 end
 for Mot in MotD 
 	SW = SchlaefliWall(visibilityConeD(Mot)) 
-    if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
+    if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims= 1) end end
 end
 for Mot in MotE[[1,12,13]]
     SW = SchlaefliWall(visibilityConeE(Mot))
-    SWs = vcat(SWs, transpose(SW[1]))
+    SWs = cat(SWs, transpose(SW[1]), dims = 1)
 end
-HA = pm.fan.HyperplaneArrangement(HYPERPLANES=SWs[2:nrows(SWs),:], SUPPORT=SecCone)
+HA = pm.fan.HyperplaneArrangement(HYPERPLANES=SWs, SUPPORT=SecCone)
 CD = HA.CHAMBER_DECOMPOSITION
 nmc = CD.N_MAXIMAL_CONES
-nc = CD.N_CONES
 
 # 4. Compute minimal number of lines
 f_normals = Matrix{Int}(CD.FACET_NORMALS)

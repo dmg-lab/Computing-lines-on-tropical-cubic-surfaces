@@ -39,8 +39,7 @@ MotJ = []
 for Mot in MotA
 	println("MotifA: ", Mot[1])
 	visibilityC = visibilityConeA(Mot)
-	SWs = SchlaefliWall(visibilityC)
-	for SW in SWs println(transpose(Vars)*SW) end
+	for SW in SchlaefliWall(visibilityC) println(transpose(Vars)*SW) end
 end
 for Mot in MotB 
 	println("MotifB: ", Mot[1])
