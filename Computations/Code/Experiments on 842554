@@ -52,32 +52,54 @@ nmc = CD.N_MAXIMAL_CONES
 # nc = CD.N_CONES
 
 # Compute minimal number of lines
-f_normals = Matrix{Int}(CD.FACET_NORMALS)
-mcones_facets = Matrix{Int}(CD.MAXIMAL_CONES_FACETS)
+# f_normals = Matrix{Int}(CD.FACET_NORMALS)
+# mcones_facets = Matrix{Int}(CD.MAXIMAL_CONES_FACETS)
+
+max_cones = Matrix{Int}(CD.MAXIMAL_CONES)
+rays = Matrix{Rational}(CD.RAYS)
+lin_space = Matrix{Rational}(SecCone.LINEALITY_SPACE)
 
 serialized = Polymake.call_function(Symbol("Core::Serializer"), :serialize, HA)
-Polymake.call_function(:common, :encode_json, serialized)
-write("SchlaefliFan842554.json", Polymake.call_function(:common, :encode_json, serialized))
+write("SchlaefliFan842554_new.json", Polymake.call_function(:common, :encode_json, serialized))
 
-for i in 1:nmc
-    cone_facets = mcones_facets[i,:]
-    ineq_pos = f_normals[filter(i -> cone_facets[i] > 0,1:ncols(mcones_facets)),:]
-    ineq = vcat(ineq_pos,-f_normals[filter(i -> cone_facets[i] < 0,1:ncols(mcones_facets)),:])
-    cone = pm.polytope.Cone(INEQUALITIES=ineq)
-    count = 0
-    for Mot in MotA
-        visCone = visibilityConeA(Mot)
-        if pm.polytope.contains(visCone, cone) count += 1 end
-    end
-    for Mot in MotD
-        visCone = visibilityConeD(Mot)
-        if pm.polytope.contains(visCone, cone) count += 1 end
-    end
-    for Mot in MotE
-        if !(Mot in MotE_hv)
-            visCone = visibilityConeE(Mot)
-            if pm.polytope.contains(visCone, cone) count += 1 end
+# for i in 1:nmc
+#     cone_facets = mcones_facets[i,:]
+    # ineq_pos = f_normals[filter(i -> cone_facets[i] > 0,1:ncols(mcones_facets)),:]
+    # ineq = vcat(ineq_pos,-f_normals[filter(i -> cone_facets[i] < 0,1:ncols(mcones_facets)),:])
+    # cone = pm.polytope.Cone(INEQUALITIES=ineq)
+n = 842554
+println("n: ", n)
+input = "SchlaefliFan$n.json";
+mpha_result = "schlaefli_mc_$n.xz";
+println("Files: $input $mpha_result")
+arrangement = load(input);
+counts = Set{Int}()
+open(`xzcat schlaefli_mc_$n.xz`) do io
+    while !eof(io)
+        m = match(r"Signature: (\[.*\]) Rays: (\[\[.*\]\])", readline(io))
+        if m != nothing
+            sig = Meta.eval(Meta.parse(m[1]))
+            R = replace(m[2], r"/" => "//")
+            R = matrix(QQ, Meta.eval(Meta.parse(R)))
+            c = pm.polytope.Cone(INPUT_RAYS=R, INPUT_LINEALITY=lin_space)
+            count = 0
+            for Mot in MotA
+                visCone = visibilityConeA(Mot)
+                if pm.polytope.contains(visCone, c) count += 1 end
+            end
+            for Mot in MotD
+                visCone = visibilityConeD(Mot)
+                if pm.polytope.contains(visCone, c) count += 1 end
+            end
+            for Mot in MotE
+                if !(Mot in MotE_hv)
+                    visCone = visibilityConeE(Mot)
+                    if pm.polytope.contains(visCone, c) count += 1 end
+                end
+            end
+            println(count)
+            push!(counts, count)
+            end
         end
     end
-    println(count)
 end

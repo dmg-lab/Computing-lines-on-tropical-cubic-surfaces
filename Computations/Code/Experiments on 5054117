@@ -185,7 +185,7 @@ lin_space = Matrix{Rational}(CD.LINEALITY_SPACE)
 for i in 1:nmc
     raysid = filter(j -> max_cones[i, j] != 0, 1:ncols(max_cones))
     rays_mcone = rays[raysid, :]
-    cone = Polymake.polytope.Cone(INPUT_RAYS = rays_mcone, LINEALITY_SPACE = lin_space)
+    c = Polymake.polytope.Cone(INPUT_RAYS = rays_mcone, LINEALITY_SPACE = lin_space)
 
 # for i in 1:nrows(mcones_facets)
 #     cone_facets = Vector{Int}(mcones_facets[i,:])
@@ -196,37 +196,51 @@ for i in 1:nmc
     count = 0
     for Mot in MotA
         visCone = visibilityConeA(Mot)
-        if pm.polytope.contains(visCone, cone) count += 1 end
+        check = filter(j ->  pm.polytope.contains(visCone, rays_mcone[j,:]), 1:nrows(rays_mcone))
+        if length(check) == nrows(rays_mcone) count += 1 end
+        # if pm.polytope.contains(visCone, c) count += 1 end
     end
     
     for Mot in MotB
         visCone = visibilityConeB(Mot)
-        if pm.polytope.contains(visCone, cone) count += 1 end
+        check = filter(j ->  pm.polytope.contains(visCone, rays_mcone[j,:]), 1:nrows(rays_mcone))
+        if length(check) == nrows(rays_mcone) count += 1 end
+        # if pm.polytope.contains(visCone, c) count += 1 end
     end
     
     for Mot in MotC
         visCone = visibilityConeC(Mot)
-        if pm.polytope.contains(visCone, cone) count += 1 end
+        check = filter(j ->  pm.polytope.contains(visCone, rays_mcone[j,:]), 1:nrows(rays_mcone))
+        if length(check) == nrows(rays_mcone) count += 1 end
+        # if pm.polytope.contains(visCone, c) count += 1 end
     end
     
     for Mot in MotD
         visCone = visibilityConeD(Mot)
-        if pm.polytope.contains(visCone, cone) count += 1 end
+        check = filter(j ->  pm.polytope.contains(visCone, rays_mcone[j,:]), 1:nrows(rays_mcone))
+        if length(check) == nrows(rays_mcone) count += 1 end
+        # if pm.polytope.contains(visCone, c) count += 1 end
     end
     
     for Mot in MotE
         visCone = visibilityConeE(Mot)
-        if pm.polytope.contains(visCone, cone) count += 1 end
+        check = filter(j ->  pm.polytope.contains(visCone, rays_mcone[j,:]), 1:nrows(rays_mcone))
+        if length(check) == nrows(rays_mcone) count += 1 end
+        # if pm.polytope.contains(visCone, c) count += 1 end
     end
     
     for Mot in MotH
         visCone = visibilityConeH(Mot)
-        if pm.polytope.contains(visCone, cone) count += 1 end
+        check = filter(j ->  pm.polytope.contains(visCone, rays_mcone[j,:]), 1:nrows(rays_mcone))
+        if length(check) == nrows(rays_mcone) count += 1 end
+        # if pm.polytope.contains(visCone, c) count += 1 end
     end   
     familycount = 0 
     for Mot in MotJ
         visCone = visibilityConeJ(Mot)
-        if pm.polytope.contains(visCone, cone) familycount += 1 end
+        check = filter(j ->  pm.polytope.contains(visCone, rays_mcone[j,:]), 1:nrows(rays_mcone))
+        if length(check) == nrows(rays_mcone) familycount += 1 end
+        # if pm.polytope.contains(visCone, c) familycount += 1 end
     end
     println(count, ", ", familycount)
 end

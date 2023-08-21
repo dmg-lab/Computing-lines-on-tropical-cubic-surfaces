@@ -68,23 +68,24 @@ for Mot in MotE[[1,12,13]]
     SW = SchlaefliWall(visibilityConeE(Mot))
     SWs = cat(SWs, transpose(SW[1]), dims = 1)
 end
+SWs = unique(SWs, dims = 1)
 HA = pm.fan.HyperplaneArrangement(HYPERPLANES=SWs, SUPPORT=SecCone)
 CD = HA.CHAMBER_DECOMPOSITION
 nmc = CD.N_MAXIMAL_CONES
 
 # 4. Compute minimal number of lines
-f_normals = Matrix{Int}(CD.FACET_NORMALS)
-mcones_facets = Matrix{Int}(CD.MAXIMAL_CONES_FACETS)
+# f_normals = Matrix{Int}(CD.FACET_NORMALS)
+# mcones_facets = Matrix{Int}(CD.MAXIMAL_CONES_FACETS)
 
 # serialize and save Schläfli fan
-serialized = Polymake.call_function(Symbol("Core::Serializer"), :serialize, HA)
+serialized = Polymake.call_function(Symbol("Core::Serializer"), :serialize, CD)
 Polymake.call_function(:common, :encode_json, serialized)
 write("SchlaefliFan37.json", Polymake.call_function(:common, :encode_json, serialized))
 
-for i in 1:nrows(mcones_facets)
-    cone_facets = mcones_facets[i,:]
-    ineq_pos = f_normals[filter(i -> cone_facets[i] > 0,1:ncols(mcones_facets)),:]
-    ineq = vcat(ineq_pos,-f_normals[filter(i -> cone_facets[i] < 0,1:ncols(mcones_facets)),:])
+for i in 1:nmc
+    # cone_facets = mcones_facets[i,:]
+    # ineq_pos = f_normals[filter(i -> cone_facets[i] > 0,1:ncols(mcones_facets)),:]
+    # ineq = vcat(ineq_pos,-f_normals[filter(i -> cone_facets[i] < 0,1:ncols(mcones_facets)),:])
     cone = pm.polytope.Cone(INEQUALITIES=ineq)
     count = 0
     for Mot in MotA

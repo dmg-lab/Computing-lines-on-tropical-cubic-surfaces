@@ -66,14 +66,13 @@ CD = HA.CHAMBER_DECOMPOSITION
 CD.N_MAXIMAL_CONES
 
 # Prepare for computation of number of lines on a surface generic enough
-f_normals = Matrix{Int}(CD.FACET_NORMALS)
-mcones_facets = Matrix{Int}(CD.MAXIMAL_CONES_FACETS)
-f_vector = CD.F_VECTOR
+# f_normals = Matrix{Int}(CD.FACET_NORMALS)
+# mcones_facets = Matrix{Int}(CD.MAXIMAL_CONES_FACETS)
+# f_vector = CD.F_VECTOR
 
 # Serialze and save Schläfli fan
 serialized = Polymake.call_function(Symbol("Core::Serializer"), :serialize, HA)
-Polymake.call_function(:common, :encode_json, serialized)
-write("SchlaefliFan2091566.json", Polymake.call_function(:common, :encode_json, serialized))
+write("SchlaefliFan2091566_new.json", Polymake.call_function(:common, :encode_json, serialized))
 
 # Compute number of lines on a surface generic enough
 for i in 1:nrows(mcones_facets)
