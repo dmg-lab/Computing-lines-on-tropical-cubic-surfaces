@@ -48,21 +48,19 @@ for Mot in MotB
     if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
 end
 for Mot in MotC
-    if !(Mot in MotC_hv)
-        SW = SchlaefliWall(visibilityConeC(Mot))
-        if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
-    end
+    SW = SchlaefliWall(visibilityConeC(Mot))
+    if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
 end
 for Mot in MotD 
 	SW = SchlaefliWall(visibilityConeD(Mot)) 
     if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
 end
-for Mot in MotE
-    if !(Mot in MotE_hv)
-        SW = SchlaefliWall(visibilityConeE(Mot))
-        if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
-    end
+for Mot in MotE[4:8,:]
+    SW = SchlaefliWall(visibilityConeE(Mot))
+    if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
 end
+SWs = unique(SWs, dims = 1)
+
 HA = pm.fan.HyperplaneArrangement(HYPERPLANES=SWs, SUPPORT=SecCone)
 CD = HA.CHAMBER_DECOMPOSITION
 CD.N_MAXIMAL_CONES

@@ -44,10 +44,12 @@ for Mot in MotE
     SW = SchlaefliWall(visibilityConeE(Mot))
     if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
 end
+
+SWs = unique(SWs, dims = 1)
 HA = pm.fan.HyperplaneArrangement(HYPERPLANES=SWs, SUPPORT=SecCone)
 CD = HA.CHAMBER_DECOMPOSITION
-CD.N_MAXIMAL_CONES
-nc = CD.N_CONES
+nmc = CD.N_MAXIMAL_CONES
+# nc = CD.N_CONES
 
 # Compute minimal number of lines
 f_normals = Matrix{Int}(CD.FACET_NORMALS)
@@ -57,7 +59,7 @@ serialized = Polymake.call_function(Symbol("Core::Serializer"), :serialize, HA)
 Polymake.call_function(:common, :encode_json, serialized)
 write("SchlaefliFan842554.json", Polymake.call_function(:common, :encode_json, serialized))
 
-for i in 1:nrows(mcones_facets)
+for i in 1:nmc
     cone_facets = mcones_facets[i,:]
     ineq_pos = f_normals[filter(i -> cone_facets[i] > 0,1:ncols(mcones_facets)),:]
     ineq = vcat(ineq_pos,-f_normals[filter(i -> cone_facets[i] < 0,1:ncols(mcones_facets)),:])

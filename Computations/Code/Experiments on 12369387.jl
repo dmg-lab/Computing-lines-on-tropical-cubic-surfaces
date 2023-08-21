@@ -37,24 +37,31 @@ for Mot in MotE
     end
 end
 
+SWs = unique(SWs, dims = 1)
+
 HA = pm.fan.HyperplaneArrangement(HYPERPLANES=SWs, SUPPORT=SecCone)
 CD = HA.CHAMBER_DECOMPOSITION
-nmc = CD.N_MAXIMAL_CONES
-
-# 3. Compute minimal number of lines
-f_normals = Matrix{Int}(CD.FACET_NORMALS)
-mcones_facets = Matrix{Int}(CD.MAXIMAL_CONES_FACETS)
-f_vector = CD.F_VECTOR
+nmc = CD.N_MAXIMAL_CONES #26232
 
 # serialize and save Schläfli fan
 serialized = Polymake.call_function(Symbol("Core::Serializer"), :serialize, HA)
 Polymake.call_function(:common, :encode_json, serialized)
 write("SchlaefliFan12369387.json", Polymake.call_function(:common, :encode_json, serialized))
 
-for i in 1:nrows(mcones_facets)
-    cone_facets = mcones_facets[i,:]
-    ineq_pos = f_normals[filter(i -> cone_facets[i] > 0,1:ncols(mcones_facets)),:]
-    ineq = vcat(ineq_pos,-f_normals[filter(i -> cone_facets[i] < 0,1:ncols(mcones_facets)),:])
+# 3. Compute minimal number of lines
+# f_normals = Matrix{Int}(CD.FACET_NORMALS)
+# mcones_facets = Matrix{Int}(CD.MAXIMAL_CONES_FACETS)
+# f_vector = CD.F_VECTOR
+max_cones = Matrix{Int}(CD.MAXIMAL_CONES)
+rays = Matrix{Rational}(CD.RAYS)
+lin_space = Matrix{Rational}(CD.LINEALITY_SPACE)
+
+for i in 1:nmc
+    # cone_facets = mcones_facets[i,:]
+    # ineq_pos = f_normals[filter(i -> cone_facets[i] > 0,1:ncols(mcones_facets)),:]
+    # ineq = vcat(ineq_pos,-f_normals[filter(i -> cone_facets[i] < 0,1:ncols(mcones_facets)),:])
+    raysid = filter(j -> max_cones[i, j] != 0, 1:ncols(max_cones))
+    rays_mcone = rays[raysid, :]
     cone = pm.polytope.Cone(INEQUALITIES=ineq)
     count = 0
     for Mot in MotA

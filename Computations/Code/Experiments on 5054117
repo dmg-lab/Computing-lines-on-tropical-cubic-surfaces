@@ -48,40 +48,42 @@ for Mot in MotD_hv
 end
 
 # 5. Compute Hyperplane Arrangement
-SWs = Matrix(undef, 0, 20)
+SWs = Matrix{Int}(undef, 0, 20)
 for Mot in MotA
     SW = SchlaefliWall(visibilityConeA(Mot))
     if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
 end
 for Mot in MotB 
     SW = SchlaefliWall(visibilityConeB(Mot))
-    if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
+    if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1)end end
 end
 for Mot in MotC
     SW = SchlaefliWall(visibilityConeC(Mot))
-    if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
+    if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1)end end
 end
 for Mot in MotD 
 	if !(Mot in MotD_hv) 
         SW = SchlaefliWall(visibilityConeD(Mot)) 
-        if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
+        if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1)end end
     end
 end
 for Mot in MotE 
     SW = SchlaefliWall(visibilityConeH(Mot))
-    if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
+    if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1)end end
 end
 for Mot in MotH
     visCone = visibilityConeH(Mot)
 	if pm.polytope.dim(visCone) == 20 
         SW = SchlaefliWall(visCone)
-        if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
+        if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1)end end
     end
 end
 for Mot in MotJ 
     SW = SchlaefliWall(visibilityConeJ(Mot))
-    if SW != [] for W in SW cat(SWs, transpose(W), dims=1) end end
+    if SW != [] for W in SW cat(SWs, transpose(W), dims=1)end end
 end
+
+SWs = unique(SWs, dims = 1)
 
 # $SWs = [[0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, -2, 1],
 # [0, 1, 0, 0, 0, 0, 0, 0, 0, -1, 0, -2, 0, 0, 0, 2, 0, 1, -1, 0],
@@ -103,13 +105,13 @@ HA = pm.fan.HyperplaneArrangement(HYPERPLANES=SWs, SUPPORT=SecCone)
 CD = HA.CHAMBER_DECOMPOSITION
 
 # Compute number of maximal cones, f-vector
-CD.N_MAXIMAL_CONES # 36
+nmc = CD.N_MAXIMAL_CONES # 36
 CD.F_VECTOR
-CD.N_CONES
+# CD.N_CONES
 
 # 6. Compute minimal number of lines
-f_normals = CD.FACET_NORMALS
-# import result in OSCAR
+# f_normals = Matrix{Int}(CD.FACET_NORMALS)
+# # import result in OSCAR
 # f_normals = [0 0 0 0 1 0 0 -1 0 0 0 0 0 -1 0 0 0 0 2 -1;
 # 0 0 0 0 -1 0 0 0 0 0 0 0 0 1 0 0 1 0 0 -1;
 # 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 -2 0 0 1;
@@ -133,7 +135,7 @@ f_normals = CD.FACET_NORMALS
 # 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 -1 0 -1 1 0;
 # 0 0 0 0 1 0 0 0 0 0 0 0 0 -2 0 0 0 0 1 0;
 # 0 0 -1 0 0 0 0 0 0 1 0 1 0 0 0 -2 0 1 1 -1]
-mcones_facets = CD.MAXIMAL_CONES_FACETS
+# mcones_facets = Matrix{Int}(CD.MAXIMAL_CONES_FACETS)
 # mcones_facets = [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0;
 # 1 1 1 1 1 1 1 1 -1 1 1 1 1 1 1 1 1 1 1 1 0 0 0;
 # -1 1 1 1 1 1 1 1 0 1 0 0 0 -1 0 1 1 1 0 0 1 1 1;
@@ -176,11 +178,21 @@ serialized = Polymake.call_function(Symbol("Core::Serializer"), :serialize, HA)
 Polymake.call_function(:common, :encode_json, serialized)
 write("SchlaefliFan5054117.json", Polymake.call_function(:common, :encode_json, serialized))
 
-for i in 1:nrows(mcones_facets)
-    cone_facets = mcones_facets[i,:]
-    ineq_pos = f_normals[filter(i -> cone_facets[i] > 0,1:ncols(mcones_facets)),:]
-    ineq = vcat(ineq_pos,-f_normals[filter(i -> cone_facets[i] < 0,1:ncols(mcones_facets)),:])
-    cone = pm.polytope.Cone(INEQUALITIES=ineq)
+max_cones = Matrix{Int}(CD.MAXIMAL_CONES)
+rays = Matrix{Rational}(CD.RAYS)
+lin_space = Matrix{Rational}(CD.LINEALITY_SPACE)
+
+for i in 1:nmc
+    raysid = filter(j -> max_cones[i, j] != 0, 1:ncols(max_cones))
+    rays_mcone = rays[raysid, :]
+    cone = Polymake.polytope.Cone(INPUT_RAYS = rays_mcone, LINEALITY_SPACE = lin_space)
+
+# for i in 1:nrows(mcones_facets)
+#     cone_facets = Vector{Int}(mcones_facets[i,:])
+#     ineq_pos = f_normals[filter(j -> cone_facets[j] > 0,1:ncols(mcones_facets)), :]
+#     ineq = vcat(ineq_pos,-f_normals[filter(j -> cone_facets[j] < 0, 1:ncols(mcones_facets)),:])
+#     cone = pm.polytope.Cone(INEQUALITIES=ineq)
+
     count = 0
     for Mot in MotA
         visCone = visibilityConeA(Mot)
@@ -216,6 +228,6 @@ for i in 1:nrows(mcones_facets)
         visCone = visibilityConeJ(Mot)
         if pm.polytope.contains(visCone, cone) familycount += 1 end
     end
-    println(count, familycount)
+    println(count, ", ", familycount)
 end
 
