@@ -48,39 +48,39 @@ for Mot in MotD_hv
 end
 
 # 5. Compute Hyperplane Arrangement
-SWs = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+SWs = Matrix(undef, 0, 20)
 for Mot in MotA
     SW = SchlaefliWall(visibilityConeA(Mot))
-    if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
+    if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
 end
 for Mot in MotB 
     SW = SchlaefliWall(visibilityConeB(Mot))
-    if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
+    if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
 end
 for Mot in MotC
     SW = SchlaefliWall(visibilityConeC(Mot))
-    if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
+    if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
 end
 for Mot in MotD 
 	if !(Mot in MotD_hv) 
         SW = SchlaefliWall(visibilityConeD(Mot)) 
-        if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
+        if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
     end
 end
 for Mot in MotE 
     SW = SchlaefliWall(visibilityConeH(Mot))
-    if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
+    if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
 end
 for Mot in MotH
     visCone = visibilityConeH(Mot)
 	if pm.polytope.dim(visCone) == 20 
         SW = SchlaefliWall(visCone)
-        if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
+        if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
     end
 end
 for Mot in MotJ 
     SW = SchlaefliWall(visibilityConeJ(Mot))
-    if SW != [] for W in SW SWs = vcat(SWs, transpose(W)) end end
+    if SW != [] for W in SW cat(SWs, transpose(W), dims=1) end end
 end
 
 # $SWs = [[0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, -2, 1],
