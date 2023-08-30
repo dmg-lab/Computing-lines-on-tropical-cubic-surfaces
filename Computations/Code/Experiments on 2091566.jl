@@ -75,25 +75,36 @@ serialized = Polymake.call_function(Symbol("Core::Serializer"), :serialize, HA)
 write("SchlaefliFan2091566_new.json", Polymake.call_function(:common, :encode_json, serialized))
 
 # Compute number of lines on a surface generic enough
-for i in 1:nrows(mcones_facets)
-    cone_facets = mcones_facets[i,:]
-    ineq_pos = f_normals[filter(i -> cone_facets[i] > 0,1:ncols(mcones_facets)),:]
-    ineq = vcat(ineq_pos,-f_normals[filter(i -> cone_facets[i] < 0,1:ncols(mcones_facets)),:])
-    cone = pm.polytope.Cone(INEQUALITIES=ineq)
-    count = 0
-    for Mot in MotA
-        visCone = visibilityConeA(Mot)
-        if pm.polytope.contains(visCone, cone) count += 1 end
-    end
-    for Mot in MotD
-        visCone = visibilityConeD(Mot)
-        if pm.polytope.contains(visCone, cone) count += 1 end
-    end
-    for Mot in MotE
-        if !(Mot in MotE_hv)
-            visCone = visibilityConeE(Mot)
-            if pm.polytope.contains(visCone, cone) count += 1 end
+# for i in 1:nrows(mcones_facets)
+#     cone_facets = mcones_facets[i,:]
+#     ineq_pos = f_normals[filter(i -> cone_facets[i] > 0,1:ncols(mcones_facets)),:]
+#     ineq = vcat(ineq_pos,-f_normals[filter(i -> cone_facets[i] < 0,1:ncols(mcones_facets)),:])
+#     cone = pm.polytope.Cone(INEQUALITIES=ineq)
+counts = Set{Int}()
+open(`xzcat /homes/combi/weis/Documents/Masterarbeit/Computations/schlaefli_mc_$n.xz`) do io
+    while !eof(io)
+        m = match(r"Signature: (\[.*\]) Rays: (\[\[.*\]\])", readline(io))
+        if m != nothing
+            sig = Meta.eval(Meta.parse(m[1]))
+            R = replace(m[2], r"/" => "//")
+            R = matrix(QQ, Meta.eval(Meta.parse(R)))
+            c = pm.polytope.Cone(INPUT_RAYS=R, INPUT_LINEALITY=lin_space)
+            count = 0
+            for Mot in MotA
+                visCone = visibilityConeA(Mot)
+                if pm.polytope.contains(visCone, c) count += 1 end
+            end
+            for Mot in MotB
+                visCone = visibilityConeB(Mot)
+                if pm.polytope.contains(visCone, c) count += 1 end
+            end
+            for Mot in MotD
+                visCone = visibilityConeD(Mot)
+                if pm.polytope.contains(visCone, c) count += 1 end
+            end
+            println(count)
+            push!(counts, count)
+            end
         end
     end
-    println(count)
 end
