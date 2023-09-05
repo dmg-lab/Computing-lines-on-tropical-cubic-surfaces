@@ -233,7 +233,7 @@ function verticesD(Mot)
 	while det(vcat(right[i:i,:], right[j:j,:])) == 0
 		if j <= 2 j += 1 else i += 1 end
 	end
-	(l,m) = inv(matrix(R, vcat(right[i:i,:], right[j:j,:]))) * vcat(left[i], left[j]);
+	(l,m) = inv(matrix(R, right[i:j,:])) * vcat(left[i], left[j]);
 	Ver2 = map(f -> evaluate(f, [a], [m]), Ray2)
 	return (VertCDE, Ver2)
 end

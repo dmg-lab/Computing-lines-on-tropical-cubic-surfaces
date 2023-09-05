@@ -82,6 +82,7 @@ serialized = Polymake.call_function(Symbol("Core::Serializer"), :serialize, CD)
 Polymake.call_function(:common, :encode_json, serialized)
 write("SchlaefliFan37.json", Polymake.call_function(:common, :encode_json, serialized))
 
+visDict = Dict()
 for i in 1:nmc
     # cone_facets = mcones_facets[i,:]
     # ineq_pos = f_normals[filter(i -> cone_facets[i] > 0,1:ncols(mcones_facets)),:]

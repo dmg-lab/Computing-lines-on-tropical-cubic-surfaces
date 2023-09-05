@@ -81,7 +81,8 @@ write("SchlaefliFan2091566_new.json", Polymake.call_function(:common, :encode_js
 #     ineq = vcat(ineq_pos,-f_normals[filter(i -> cone_facets[i] < 0,1:ncols(mcones_facets)),:])
 #     cone = pm.polytope.Cone(INEQUALITIES=ineq)
 counts = Set{Int}()
-open(`xzcat /homes/combi/weis/Documents/Masterarbeit/Computations/schlaefli_mc_$n.xz`) do io
+visDict = Dict()
+open(`xzcat last_1000_2091566.xz`) do io
     while !eof(io)
         m = match(r"Signature: (\[.*\]) Rays: (\[\[.*\]\])", readline(io))
         if m != nothing
@@ -91,20 +92,22 @@ open(`xzcat /homes/combi/weis/Documents/Masterarbeit/Computations/schlaefli_mc_$
             c = pm.polytope.Cone(INPUT_RAYS=R, INPUT_LINEALITY=lin_space)
             count = 0
             for Mot in MotA
-                visCone = visibilityConeA(Mot)
+                if !haskey(visDict, Mot) push!(visDict, Mot=>visibilityConeA(Mot)) end
+                visCone = visDict[Mot]
                 if pm.polytope.contains(visCone, c) count += 1 end
             end
             for Mot in MotB
-                visCone = visibilityConeB(Mot)
+                if !haskey(visDict, Mot) push!(visDict, Mot=>visibilityConeB(Mot)) end
+                visCone = visDict[Mot]
                 if pm.polytope.contains(visCone, c) count += 1 end
             end
             for Mot in MotD
-                visCone = visibilityConeD(Mot)
+                if !haskey(visDict, Mot) push!(visDict, Mot=>visibilityConeD(Mot)) end
+                visCone = visDict[Mot]
                 if pm.polytope.contains(visCone, c) count += 1 end
             end
             println(count)
             push!(counts, count)
-            end
         end
     end
 end
