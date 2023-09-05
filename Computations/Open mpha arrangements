@@ -1,0 +1,17 @@
+n = ARGV
+println("n: ", n)
+input = "SchlaefliFan$n.json";
+mpha_result = "schlaefli_mc_$n.xz";
+println("Files: $input $mpha_result")
+arrangement = load(input);
+open(`xzcat schlaefli_mc_$n.xz`) do io
+  while !eof(io)
+    m = match(r"Signature: (\[.*\]) Rays: (\[\[.*\]\])", readline(io))
+    if m != nothing
+        sig = Meta.eval(Meta.parse(m[1]))
+        R = replace(m[2], r"/" => "//")
+        R = matrix(QQ, Meta.eval(Meta.parse(R)))
+        println(R)
+    end
+  end
+end

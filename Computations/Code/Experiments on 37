@@ -1,10 +1,13 @@
 # Experiments on 37
 
-include("schlaefliwalls.jl")
-include("To be legible/37.jl")
+# include("schlaefliwalls.jl")
+# include("To be legible/37.jl")
+
+MotE_hv = filter(Mot -> pm.polytope.dim(visibilityConeE(Mot)) != 20, MotE) # == MotE
 
 # 1. Check which hyperplanes of secondary cone contain Motif 
-for Mot in MotE
+hypDict = Dict{Vector{Matrix{Int}}, Vector{Int}}()
+for Mot in MotE_hv
     visCone = visibilityConeE(Mot)
     hyp = filter(i -> pm.polytope.contains(pm.polytope.facet(SecCone,i),visCone), 0:18)
     V = Vector{Int}(SecCone.RAYS_IN_FACETS[hyp[1]+1, :])
@@ -15,30 +18,17 @@ for Mot in MotE
     V = map(i -> i-1, filter(i -> i!=0, V))
     f = pm.polytope.face(SecCone, V)
     println("The visibility cone of motif ", Mot[1], " is contained in a face of the secondary cone: ", pm.polytope.contains(f, visCone))
-    println("It has hyperplanes", hyp)
+    println("The visibility cone of motif ", Mot[1], " coincides with a face of the secondary cone: ", pm.polytope.equal_polyhedra(f, visCone))
+    println("It lies in hyperplanes", hyp)
+    hypDict[Mot] = hyp
 end
 
-# 2. Check whether intersection of Schlaefli walls coincide and hyperplanes of hv motifs coincide with their alleged schlaefliwalls
-# for Mot in MotE
-#     visCone = visibilityConeE(Mot)
-#     i = 1; j = 1; Mot_A = MotA[1]; Mot_D = MotD[1]
-#     F = pm.polytope.intersection(visCone, visibilityConeA(Mot_A))
-#     G = pm.polytope.intersection(visCone, visibilityConeD(Mot_D))
-#     while !pm.polytope.equal_polyhedra(visCone, F) && !pm.polytope.equal_polyhedra(visCone, G) && i < length(MotA) && j < length(MotD)
-#         i += 1; j += 1
-#         Mot_A = MotA[i]; Mot_D = MotD[j]
-#         F = pm.polytope.intersection(visCone, visibilityConeA(Mot_A))
-#         G = pm.polytope.intersection(visCone, visibilityConeD(Mot_D))
-#     end
-#     if pm.polytope.equal_polyhedra(visCone, F) println(Mot, "i", i) end
-#     if pm.polytope.equal_polyhedra(visCone, G) println(Mot, "j", j) end
-# end
-
-for Mot in MotE
+# 2. Check if two cones form one
+for Mot in MotE_hv
     visCone = visibilityConeE(Mot)
-    check = false; i = 1
-    while !check && i < length(MotD)
-        visConeD = visibilityConeD(MotD[i])
+    check = false; j = 1
+    while !check && j < length(MotD)
+        visConeD = visibilityConeD(Mot)
         hyp = filter(i -> pm.polytope.contains(pm.polytope.facet(SecCone,i),visCone), 0:18)
         V = Vector{Int}(SecCone.RAYS_IN_FACETS[hyp[1]+1, :])
         for i in 2:length(hyp) V+= Vector{Int}(SecCone.RAYS_IN_FACETS[hyp[i]+1,:]) end
@@ -50,8 +40,26 @@ for Mot in MotE
         inter = pm.polytope.intersection(f, visConeD)
         check = pm.polytope.equal_polyhedra(inter, visCone)
         if check println(Mot, i) end
-        i += 1
+        j += 1
     end
+end
+
+i = 1
+lin_space = SecCone.LINEALITY_SPACE
+while i < length(MotE)
+    visCone_1 = visibilityConeE(MotE[i])
+    visCone_2 = visibilityConeE(MotE[i+1])
+    union_cone = pm.polytope.Cone(INPUT_RAYS=vcat(visCone_1.RAYS, visCone_2.RAYS), INPUT_LINEALITY=lin_space)
+    hyp = hypDict[MotE[i]]
+    V = Vector{Int}(SecCone.RAYS_IN_FACETS[hyp[1]+1, :])
+    for i in 2:length(hyp) V+= Vector{Int}(SecCone.RAYS_IN_FACETS[hyp[i]+1,:]) end
+    for i in 1:length(V) 
+        if V[i]==length(hyp) V[i] = i else V[i] = 0 end 
+    end
+    V = map(i -> i-1, filter(i -> i!=0, V))
+    f = pm.polytope.face(SecCone, V)
+    println(pm.polytope.equal_polyhedra(f, union_cone))
+    i += 2
 end
 
 # 3. Compute Hyperplane Arrangement
@@ -64,38 +72,39 @@ for Mot in MotD
 	SW = SchlaefliWall(visibilityConeD(Mot)) 
     if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims= 1) end end
 end
-for Mot in MotE[[1,12,13]]
-    SW = SchlaefliWall(visibilityConeE(Mot))
-    SWs = cat(SWs, transpose(SW[1]), dims = 1)
-end
 SWs = unique(SWs, dims = 1)
 HA = pm.fan.HyperplaneArrangement(HYPERPLANES=SWs, SUPPORT=SecCone)
 CD = HA.CHAMBER_DECOMPOSITION
-nmc = CD.N_MAXIMAL_CONES
+nmc = CD.N_MAXIMAL_CONES # 199
 
 # 4. Compute minimal number of lines
-# f_normals = Matrix{Int}(CD.FACET_NORMALS)
-# mcones_facets = Matrix{Int}(CD.MAXIMAL_CONES_FACETS)
+max_cones = Matrix{Int}(CD.MAXIMAL_CONES)
+rays = Matrix{Rational}(CD.RAYS)
+lin_space = Matrix{Rational}(CD.LINEALITY_SPACE)
 
 # serialize and save Schläfli fan
 serialized = Polymake.call_function(Symbol("Core::Serializer"), :serialize, CD)
-Polymake.call_function(:common, :encode_json, serialized)
 write("SchlaefliFan37.json", Polymake.call_function(:common, :encode_json, serialized))
 
-visDict = Dict()
+visConeDict = Dict{Vector{Matrix{Int64}}, Polymake.BigObjectAllocated}()
 for i in 1:nmc
-    # cone_facets = mcones_facets[i,:]
-    # ineq_pos = f_normals[filter(i -> cone_facets[i] > 0,1:ncols(mcones_facets)),:]
-    # ineq = vcat(ineq_pos,-f_normals[filter(i -> cone_facets[i] < 0,1:ncols(mcones_facets)),:])
-    cone = pm.polytope.Cone(INEQUALITIES=ineq)
+    raysid = filter(j -> max_cones[i, j] != 0, 1:ncols(max_cones))
+    rays_mcone = rays[raysid, :]
+    c = pm.polytope.Cone(INPUT_RAYS=rays_mcone, INPUT_LINEALITY=lin_space)
     count = 0
     for Mot in MotA
-        visCone = visibilityConeA(Mot)
-        if pm.polytope.contains(visCone, cone) count += 1 end
+        if !haskey(visConeDict, Mot) visConeDict[Mot] = visibilityConeA(Mot) end
+        visCone = visConeDict[Mot]
+        if pm.polytope.contains(visCone, c) count += 1 end
     end
     for Mot in MotD
-        visCone = visibilityConeD(Mot)
-        if pm.polytope.contains(visCone, cone) count += 1 end
+        if !haskey(visConeDict, Mot) visConeDict[Mot] = visibilityConeD(Mot) end
+        visCone = visConeDict[Mot]
+        if pm.polytope.contains(visCone, c) count += 1 end
     end
-    println(count)
+    if count != 19 
+        return "Not all cones have 19 visible Motifs!"
+    end
 end
+
+

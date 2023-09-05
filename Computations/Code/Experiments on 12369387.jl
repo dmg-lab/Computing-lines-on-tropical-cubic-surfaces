@@ -1,22 +1,4 @@
-MotE_hv = filter(Mot -> pm.polytope.dim(visibilityConeE(Mot)) < 20, MotE)
-
-# 1. Check if visibility cones of hv motifs are contained in a face of secondary cone, if so check if they coincide
-for Mot in MotE_hv 
-    visCone = visibilityConeE(Mot)
-    hyp = filter(i -> pm.polytope.contains(pm.polytope.facet(SecCone,i),visCone), 0:15)
-#     println(hyp, ", ", pm.polytope.dim(visCone))
-# end
-    V = Vector{Int}(SecCone.RAYS_IN_FACETS[hyp[1]+1, :])
-    for i in 2:length(hyp) V+= Vector{Int}(SecCone.RAYS_IN_FACETS[hyp[i]+1,:]) end
-    for i in 1:length(V) 
-        if V[i]==length(hyp) V[i] = i else V[i] = 0 end 
-    end
-    V = map(i -> i-1, filter(i -> i!=0, V))
-    f = pm.polytope.face(SecCone, V)
-    println("The visibility cone of motif ", Mot[1], " coincides with a face of the secondary cone ", pm.polytope.equal_polyhedra(f, visCone))
-end
-
-# 2. Compute Schläfli fan
+# 1. Compute Schläfli fan
 SWs = Matrix{Int}(undef, 0, 20)
 for Mot in MotA
     SW = SchlaefliWall(visibilityConeA(Mot))
@@ -77,10 +59,8 @@ for i in 1:nmc
         if pm.polytope.contains(visCone, c) count += 1 end
     end
     for Mot in MotE
-        if !(Mot in MotE_hv)
-            visCone = visibilityConeE(Mot)
-            if pm.polytope.contains(visCone, c) count += 1 end
-        end
+        visCone = visibilityConeE(Mot)
+        if pm.polytope.contains(visCone, c) count += 1 end
     end
-    if count != 17 println("Attention: ", i) end
+    if count != 19 println("Attention: ", i) end
 end
