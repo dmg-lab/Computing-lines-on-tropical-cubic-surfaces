@@ -165,7 +165,7 @@ function verticesC(Mot)
 	N2 = [Mcoef[5] - Mcoef[4]; Mcoef[6] - Mcoef[5]; Mcoef[7] - Mcoef[6]]
 	VertDEFG = inv(M2)*N2 
 
-	# Vertex DE = intrsection of VertBCDE - l*(Dir[Mot[2][1]+1,:] + Dir[Mot[2][2]+1,:]) and VertDEFG - m*Dir[Mot[2][4],:]
+	# Vertex DE = intrsection of VertBCDE - l*(Dir[Mot[2][1]+1,:] + Dir[Mot[2][2]+1,:]) and VertDEFG - m*Dir[Mot[2][4]+1,:], l, m > 0
 	left = VertBCDE - VertDEFG
 	right = hcat(Dir[Mot[2][1]+1,:] + Dir[Mot[2][2]+1,:], Dir[Mot[2][4]+1,:])
 	(i, j) = (1,2)
@@ -269,7 +269,7 @@ function verticesE(Mot)
 
 	# Vertex BC
 	left = VertBCDE - VertBCFG
-	right = hcat(Dir[Mot[2][4]+1,:], Dir[Mot[2][1]+1,:])
+	right = hcat(Dir[Mot[2][4]+1,:], -Dir[Mot[2][3]+1,:])
 	(i, j) = (1,2)
 	while det(vcat(right[i:i,:], right[j:j,:])) == 0
 		if j <= 2 j += 1; else i += 1 end
@@ -299,9 +299,9 @@ function visibilityConeE(Mot)
 	Ineq2 = map(f -> f - Hyp2[Mot[1][3] + 1], Hyp2)
 	Totineq = vcat(Ineq1, Ineq2)
 	IM = transpose(matrix_from_vectors(map(f -> map(v -> coeff(f, v), Vars), Totineq)))
-	cone = pm.polytope.Cone(INEQUALITIES=IM[filter(i->!iszero(IM[i,:]), 1:nrows(IM)), :])
+	c = pm.polytope.Cone(INEQUALITIES=IM[filter(i->!iszero(IM[i,:]), 1:nrows(IM)), :])
 
-	inter = pm.polytope.intersection(cone, SecCone)
+	inter = pm.polytope.intersection(c, SecCone)
 	return inter
 end
 
