@@ -1,10 +1,11 @@
 cff-version: 1.0.0
-message: "This is the associated git repository to the master thesis Computing lines of tropical cubic surfaces."
-- family-names: "Weis"
-  given-names: "Lena"
-  orcid: " "
-title: "Computing lines of tropical cubic surfaces git repository"
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Lena"
+  given-names: "Weis"
+  orcid: "https://orcid.org/0000-0000-0000-0000"
+title: "Associated github repository to master thesis Computing lines on tropical cubic surfaces"
 version: 1.0.0
-doi: 
+doi: 10.5281/zenodo.1234
 date-released: 2023-09-13
-url: "https://github.com/lenweis/Masterarbeit/"
+url: "https://github.com/lenweis/Masterarbeit/""
