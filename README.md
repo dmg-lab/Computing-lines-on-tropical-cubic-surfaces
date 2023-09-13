@@ -1,11 +1,11 @@
-# Masterarbeit "Computing lines on tropical cubic surface"
+# Masterarbeit "Computing Lines on Tropical Cubic Surface"
 
 This repository contains the code belonging to the master thesis "Computing lines on tropical cubic surfaces" written by Lena Weis 
 and supervised by Prof. Dr. Michael Joswig (TU Berlin) and Dr. Marta Panizzut (MPI Mathematics in Sciences). It was published in order to 
 make the results of the thesis FAIR, i.e. findable, accessible, interoperable and reusable. 
 
 ## Problem Definition
-The aim of this thesis was to compute the number of lines on a surface of one of five different combintorial types of smooth tropical cubic surface. 
+The aim of this thesis was to compute the number of lines on a surface of one of five different combintorial types of smooth tropical cubic surface utilizing the Schläfli fan introduced in [[1]](#1). 
 They are
 - #37
 - #842554
@@ -35,5 +35,17 @@ The Schläfli fans can be found [here](Computations/Schlaefli_fans).
    such that the number of lines on the surfaces dual to the points in each cone is exactly 14, 15, 17, 18, 19, 20 or 21.
 
 ### 3. Check the remaining statement as the number of lines and the Schläfli pillars
-   !MISSING
-   
+The remaining statements for each triangulation in the thesis, including the number of lines, are computed [here](Computations/Code/Computating\ lines).
+   - Note to 5054117:
+     We further [checked](Computations/Code/Verifying_hampe_is_5054117.pl) whether the polynomial (2) in [[2]](#2) is actually dual to the triangulation 5054117.
+
+## References
+<a id="1">[1]</a> 
+Joswig, Michael and Panizzut, Marta and Sturmfels, Bernd. (2020). 
+The Schläfli Fan. 
+A Discrete Comput Geom 64, pp. 355–381
+
+<a id="1">[2]</a> 
+Hampe, Simon and Joswig, Michael. (2018). 
+Tropical Computations in polymake. 
+Algorithmic and Experimental Methods in Algebra, Geometry, and Number Theory, pp. 361–385.
