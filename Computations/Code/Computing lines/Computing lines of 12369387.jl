@@ -1,3 +1,8 @@
+# Experiments on triangulation #12359387 (honeycomb triangulation)
+using Oscar
+include("../schlaefliwalls.jl")
+include("../info triangulation/12369387.jl")
+
 # 1. Compute Schläfli fan
 SWs = Matrix{Int}(undef, 0, 20)
 for Mot in MotA
@@ -30,33 +35,55 @@ write("SchlaefliFan12369387.json", Polymake.call_function(:common, :encode_json,
 
 # 3. Compute minimal number of lines
 max_cones = Matrix{Int}(CD.MAXIMAL_CONES)
-rays = Matrix{Rational}(CD.RAYS)
+r = Matrix{Rational}(CD.RAYS)
 lin_space = Matrix{Rational}(CD.LINEALITY_SPACE)
 
-count = 0
+visDict = Dict{Vector{Matrix{Int64}}, Polymake.BigObjectAllocated}()
+counts = Set{Int}()
+
 for i in 1:nmc
-    # cone_facets = mcones_facets[i,:]
-    # ineq_pos = f_normals[filter(i -> cone_facets[i] > 0,1:ncols(mcones_facets)),:]
-    # ineq = vcat(ineq_pos,-f_normals[filter(i -> cone_facets[i] < 0,1:ncols(mcones_facets)),:])
     raysid = filter(j -> max_cones[i, j] != 0, 1:ncols(max_cones))
-    rays_mcone = rays[raysid, :]
+    rays_mcone = r[raysid, :]
     c = pm.polytope.Cone(INPUT_RAYS=rays_mcone, INPUT_LINEALITY=lin_space)
     count = 0
     for Mot in MotA
-        visCone = visibilityConeA(Mot)
+        if !haskey(visDict, Mot) push!(visDict, Mot=>visibilityConeA(Mot)) end
+        visCone = visDict[Mot]
         if pm.polytope.contains(visCone, c) count += 1 end
     end
+    
     for Mot in MotB
-        visCone = visibilityConeB(Mot)
+        if !haskey(visDict, Mot) push!(visDict, Mot=>visibilityConeB(Mot)) end
+        visCone = visDict[Mot]
         if pm.polytope.contains(visCone, c) count += 1 end
     end
+
+    for Mot in MotC
+        if !haskey(visDict, Mot) push!(visDict, Mot=>visibilityConeC(Mot)) end
+        visCone = visDict[Mot]
+        if pm.polytope.contains(visCone, c) count += 1 end
+    end
+
     for Mot in MotD
-        visCone = visibilityConeD(Mot)
+        if !haskey(visDict, Mot) push!(visDict, Mot=>visibilityConeD(Mot)) end
+        visCone = visDict[Mot]
         if pm.polytope.contains(visCone, c) count += 1 end
     end
+
     for Mot in MotE
-        visCone = visibilityConeE(Mot)
+        if !haskey(visDict, Mot) push!(visDict, Mot=>visibilityConeE(Mot)) end
+        visCone = visDict[Mot]
         if pm.polytope.contains(visCone, c) count += 1 end
     end
-    if count != 19 println("Attention: ", i) end
+
+    for Mot in MotH
+        if !haskey(visDict, Mot) push!(visDict, Mot=>visibilityConeH(Mot)) end
+        visCone = visDict[Mot]
+        if pm.polytope.contains(visCone, c) count += 1 end
+    end
+    println(count + 1) # +1 for globally visible motifs 3F
+    push!(counts, count)
 end
+
+println("Number(s) of lines:")
+println(counts)
