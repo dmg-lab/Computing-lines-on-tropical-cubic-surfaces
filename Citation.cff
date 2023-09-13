@@ -1,7 +1,8 @@
 cff-version: 1.0.0
 message: "This is the associated git repository to the master thesis "Computing lines of tropical cubic surfaces". It contains code the Schläfli fan of five different triangulations of 3Delta_3. From there we are able to compute the number of lines on generic surfaces dual to one of the five triangulation."
 authors:
-  - family-names: Weis
-    given-names: Lena
+  - family-names: "Weis"
+    given-names: "Lena"
 title: "Computing lines of tropical cubic surfaces"
 date-released: 2022-09-13
+url: "https://github.com/lenweis/Masterarbeit/"
