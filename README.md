@@ -1,6 +1,6 @@
 # Masterarbeit "Computing Lines on Tropical Cubic Surface"
 
-This repository contains the code belonging to the master thesis "Computing lines on tropical cubic surfaces" written by Lena Weis 
+This repository contains the code belonging to the master thesis "Computing Lines on Tropical Cubic Surfaces" written by Lena Weis 
 and supervised by Prof. Dr. Michael Joswig (TU Berlin) and Dr. Marta Panizzut (MPI Mathematics in Sciences). It was published in order to 
 make the results of the thesis FAIR, i.e. findable, accessible, interoperable and reusable. 
 
