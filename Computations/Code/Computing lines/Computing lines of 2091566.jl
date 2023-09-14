@@ -1,12 +1,13 @@
-# Experiments on 2091566
+# Experiments on triangulation #2091566
+using Oscar
+include("../schlaefliwalls.jl")
+include("../info triangulation/2091566.jl")
 
-include("schlaefliwalls.jl")
-include("To be legible/2091566.jl")
-
+# 0. Preliminaries
 MotC_hv = filter(Mot -> pm.polytope.dim(visibilityConeC(Mot))< 20, MotC)
 MotE_hv = filter(Mot -> pm.polytope.dim(visibilityConeE(Mot))< 20, MotE)
 
-# Compute faces of secondary cone containing lower dimensional visibility cones and check if they coincide
+# 1. Compute faces of secondary cone containing lower dimensional visibility cones and check if they coincide
 for Mot in MotC_hv 
     visCone = visibilityConeC(Mot)
     hyp = filter(i -> pm.polytope.contains(pm.polytope.facet(SecCone,i),visCone), 0:Int(SecCone.N_FACETS)-1)
@@ -37,58 +38,46 @@ for Mot in MotE_hv
     println("The visibility cone of motif ", Mot[1], " coincides with a face of the secondary cone ", pm.polytope.contains(f, visCone))
 end
 
-# Compute Schläfli hyperplanes
+# 2. Compute Schläfli hyperplanes
 SWs = Matrix{Int}(undef, 0, 20)
 for Mot in MotA
     SW = SchlaefliWall(visibilityConeA(Mot))
-    if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
+    if SW != [] for W in SW global SWs = cat(SWs, transpose(W), dims=1) end end
 end
 for Mot in MotB
     SW = SchlaefliWall(visibilityConeB(Mot))
-    if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
+    if SW != [] for W in SW global SWs = cat(SWs, transpose(W), dims=1) end end
 end
 for Mot in MotC
     if !(Mot in MotC_hv)
         SW = SchlaefliWall(visibilityConeC(Mot))
-        if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
+        if SW != [] for W in SW global SWs = cat(SWs, transpose(W), dims=1) end end
     end
 end
 for Mot in MotD 
 	SW = SchlaefliWall(visibilityConeD(Mot)) 
-    if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
+    if SW != [] for W in SW global SWs = cat(SWs, transpose(W), dims=1) end end
 end
 for Mot in MotE
     if !(Mot in MotE_hv)
         SW = SchlaefliWall(visibilityConeE(Mot))
-        if SW != [] for W in SW SWs = cat(SWs, transpose(W), dims=1) end end
+        if SW != [] for W in SW global SWs = cat(SWs, transpose(W), dims=1) end end
     end
 end
 SWs = unique(SWs, dims = 1)
 
 HA = pm.fan.HyperplaneArrangement(HYPERPLANES=SWs, SUPPORT=SecCone)
-CD = HA.CHAMBER_DECOMPOSITION
-CD.N_MAXIMAL_CONES
+# CD = HA.CHAMBER_DECOMPOSITION # too big to be computed sequentially, has thus been computed in mpha
 
-# Prepare for computation of number of lines on a surface generic enough
-# f_normals = Matrix{Int}(CD.FACET_NORMALS)
-# mcones_facets = Matrix{Int}(CD.MAXIMAL_CONES_FACETS)
-# f_vector = CD.F_VECTOR
-
-# Serialze and save Schläfli fan
+# Serialze and save Schläfli fan for mpha
 serialized = Polymake.call_function(Symbol("Core::Serializer"), :serialize, HA)
 write("SchlaefliFan2091566.json", Polymake.call_function(:common, :encode_json, serialized))
 
-# Compute number of lines on a surface generic enough
-# for i in 1:nrows(mcones_facets)
-#     cone_facets = mcones_facets[i,:]
-#     ineq_pos = f_normals[filter(i -> cone_facets[i] > 0,1:ncols(mcones_facets)),:]
-#     ineq = vcat(ineq_pos,-f_normals[filter(i -> cone_facets[i] < 0,1:ncols(mcones_facets)),:])
-#     cone = pm.polytope.Cone(INEQUALITIES=ineq)
-counts = Set{Int}()
+# 3. Compute number of lines on a surface generic enough
 lin_space = SecCone.LINEALITY_SPACE
 visDict = Dict()
-co = Set()
-open(`xzcat schlaefli2091566.out.xz`) do io
+counts = Set{Int}()
+open(`xzcat ../../Schlaefli_fans/SchlaefliFan2091566.out.xz`) do io
     while !eof(io)
         m = match(r"Signature: (\[.*\]) Rays: (\[\[.*\]\])", readline(io))
         if m != nothing
@@ -119,3 +108,6 @@ open(`xzcat schlaefli2091566.out.xz`) do io
         end
     end
 end
+
+println("Number(s) of lines:")
+println(counts)

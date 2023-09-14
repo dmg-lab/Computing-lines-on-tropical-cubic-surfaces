@@ -23,10 +23,8 @@ for Mot in MotE
 end
 
 SWs = unique(SWs, dims = 1)
-
 HA = pm.fan.HyperplaneArrangement(HYPERPLANES=SWs, SUPPORT=SecCone)
 CD = HA.CHAMBER_DECOMPOSITION
-
 nmc = CD.N_MAXIMAL_CONES 
 
 # serialize and save Schläfli fan
