@@ -14,7 +14,7 @@ They are
 - #12369387
 
 ## Reusing the results
-The Schläfli fans can be found [here](Computations/Schlaefli_fans).
+The Schläfli fans can be found [here](Computations/Schlaefli_fans) and the larger datasets are stored [here](https://polymake.org/downloads/schlaefli_fans/).
 
 ## Reproducing the results
 ### 1. Reproduce the Schläfli walls of a triangulation
